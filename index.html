@@ -1,0 +1,1699 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0e0d0c">
+<title>Picture House · Nick Moody's watchlist</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2315130f'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' text-anchor='middle' fill='%23d8a54a'%3ENM%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#0e0d0c; --bg2:#15130f; --panel:#1b1916; --panel2:#221f1b; --line:#2e2a24; --line2:#3a352d;
+  --text:#ece6da; --muted:#9d958a; --dim:#766f65; --accent:#d8a54a; --accent2:#f0c574; --accent-ink:#1a1407;
+  --danger:#d06a5a; --ok:#7fb069;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua","URW Palladio L",Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(1200px 600px at 80% -10%,#221c12 0%,transparent 60%),var(--bg);min-height:100vh}
+a{color:var(--accent2)}
+button,input,textarea,select{font:inherit;color:inherit}
+::selection{background:var(--accent);color:var(--accent-ink)}
+[hidden]{display:none!important}
+.wrap{max-width:1280px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:20;background:rgba(14,13,12,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topin{display:flex;align-items:center;gap:24px;min-height:64px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.mark{width:38px;height:38px;border:1px solid var(--accent);color:var(--accent);display:grid;place-items:center;font:600 14px/1 var(--serif);letter-spacing:.06em;border-radius:50%}
+.brand h1{margin:0;font:600 21px/1.1 var(--serif);letter-spacing:.01em}
+.brand p{margin:0;color:var(--muted);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+nav.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav.tabs button{background:none;border:0;padding:8px 13px;border-radius:999px;color:var(--muted);cursor:pointer;font-size:14px;letter-spacing:.02em}
+nav.tabs button:hover{color:var(--text);background:var(--panel)}
+nav.tabs button[aria-selected=true]{color:var(--accent-ink);background:var(--accent);font-weight:600}
+nav.tabs .n{font-size:11px;opacity:.75;margin-left:5px;font-variant-numeric:tabular-nums}
+main{padding:22px 0 80px}
+h2.sec{font:600 26px/1.2 var(--serif);margin:6px 0 4px}
+p.lede{color:var(--muted);margin:0 0 18px;max-width:72ch}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;padding:6px 14px;border-radius:999px;cursor:pointer;color:var(--muted);font-size:13.5px}
+.seg button[aria-pressed=true]{background:var(--panel2);color:var(--text);box-shadow:inset 0 0 0 1px var(--line2)}
+.search{flex:1;min-width:180px;position:relative;display:block}
+.search input{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 14px 8px 36px;outline:none}
+.search input:focus{border-color:var(--accent)}
+.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);opacity:.5}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line2);color:var(--text);padding:7px 13px;border-radius:999px;cursor:pointer;font-size:13.5px;white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
+.btn:hover{border-color:var(--accent);color:var(--accent2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.primary:hover{background:var(--accent2);color:var(--accent-ink)}
+.btn.ghost{background:transparent}
+.btn.danger:hover{border-color:var(--danger);color:var(--danger)}
+.btn.sm{padding:5px 10px;font-size:12.5px}
+.btn:disabled{opacity:.5;cursor:default}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 20px}
+.chip{border:1px solid var(--line2);background:transparent;color:var(--muted);border-radius:999px;padding:4px 11px;font-size:12.5px;cursor:pointer;letter-spacing:.02em}
+.chip:hover{color:var(--text)}
+.chip[aria-pressed=true]{border-color:var(--accent);color:var(--accent2);background:rgba(216,165,74,.1)}
+.chip .c{opacity:.55;margin-left:5px;font-size:11px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:26px 18px}
+.card{display:flex;flex-direction:column;border-radius:var(--r);min-width:0;animation:fade .35s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.poster{position:relative;aspect-ratio:2/3;border-radius:8px;overflow:hidden;background:var(--panel);box-shadow:0 10px 30px rgba(0,0,0,.35);border:1px solid var(--line)}
+.poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .4s}
+.poster img.ok{opacity:1}
+.ph{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 14px;background:linear-gradient(160deg,hsl(var(--h) 28% 17%) 0%,hsl(var(--h) 22% 9%) 70%,#0b0a09 100%)}
+.ph::after{content:"";position:absolute;inset:8px;border:1px solid hsla(var(--h),40%,70%,.14);border-radius:4px;pointer-events:none}
+.ph-top{display:flex;justify-content:space-between;font:600 10px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:hsla(var(--h),50%,80%,.6)}
+.ph-title{margin-top:auto;font:600 22px/1.08 var(--serif);color:#f3ecdf;text-wrap:balance;overflow-wrap:anywhere}
+.ph-rule{width:34px;height:2px;background:var(--accent);margin:12px 0 8px;opacity:.85}
+.ph-year{font:500 12px/1 var(--sans);letter-spacing:.18em;color:hsla(var(--h),30%,85%,.7)}
+.pill{position:absolute;top:8px;left:8px;z-index:2;background:rgba(10,9,8,.8);border:1px solid rgba(255,255,255,.08);color:var(--accent2);font:600 11px/1 var(--sans);padding:4px 7px;border-radius:999px;letter-spacing:.04em}
+.pill.r{left:auto;right:8px;color:var(--text)}
+.poster.b .ph-top span:first-child{visibility:hidden}
+.meta{padding:10px 2px 0;display:flex;flex-direction:column;gap:5px;flex:1}
+.meta h3{margin:0;font:600 16.5px/1.2 var(--serif)}
+.sub{color:var(--dim);font-size:12px;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.reason{margin:0;color:#cfc6b7;font-size:13px;line-height:1.45}
+.reason b{color:var(--accent2);font-weight:600}
+.overview{margin:0;color:var(--muted);font-size:12.5px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tags{color:var(--dim);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.actions .btn{padding:5px 10px;font-size:12.5px}
+.empty{border:1px dashed var(--line2);border-radius:var(--r);padding:36px;text-align:center;color:var(--muted)}
+.more{display:flex;justify-content:center;margin-top:26px}
+.hero{display:grid;grid-template-columns:220px 1fr;gap:26px;background:linear-gradient(120deg,#1f1911,#141210 60%);border:1px solid var(--line2);border-radius:14px;padding:22px;margin:0 0 28px;position:relative}
+.hero .poster{box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.hero .kicker{font:600 11px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--accent)}
+.hero h3{font:600 clamp(26px,3.4vw,40px)/1.05 var(--serif);margin:10px 0 4px}
+.hero .reason{font-size:15px;max-width:60ch}
+.hero .overview{-webkit-line-clamp:6;font-size:14px;max-width:65ch}
+.hero .x{position:absolute;top:12px;right:12px}
+.hero .body{display:flex;flex-direction:column;gap:8px}
+.hero .actions{margin-top:8px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px}
+.panel h3{margin:0 0 4px;font:600 19px/1.2 var(--serif)}
+.panel p.help{margin:0 0 12px;color:var(--muted);font-size:13.5px}
+.cols{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:start}
+textarea,input[type=text],input[type=email],input[type=password]{width:100%;background:var(--bg2);border:1px solid var(--line2);border-radius:8px;padding:10px 12px;outline:none;color:var(--text)}
+textarea{min-height:220px;resize:vertical;font:13px/1.5 var(--mono)}
+textarea:focus,input:focus{border-color:var(--accent)}
+label.f{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:10px 0 5px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.check{display:inline-flex;gap:8px;align-items:center;color:var(--muted);font-size:13.5px;cursor:pointer}
+.msg{margin-top:12px;font-size:13.5px;padding:10px 12px;border-radius:8px;background:var(--bg2);border:1px solid var(--line2);color:var(--muted)}
+.msg.err{border-color:rgba(208,106,90,.5);color:#e9a79c}
+.msg.ok{border-color:rgba(127,176,105,.45);color:#b9d7a8}
+.msg:empty{display:none}
+.list{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.li{display:flex;align-items:center;gap:12px;padding:9px 14px;border-top:1px solid var(--line);background:var(--bg2)}
+.li:first-child{border-top:0}
+.li .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li .t small{color:var(--dim);margin-left:7px}
+.badge{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line2);border-radius:999px;padding:2px 7px;white-space:nowrap}
+.badge.w{color:var(--ok);border-color:rgba(127,176,105,.4)}
+.stat{font:600 38px/1 var(--serif);color:var(--accent2)}
+.statl{color:var(--muted);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase}
+details summary{cursor:pointer;color:var(--muted);margin:16px 0 8px}
+code{font-family:var(--mono);font-size:12.5px;background:var(--bg2);padding:1px 5px;border-radius:4px;border:1px solid var(--line)}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:#26221c;border:1px solid var(--line2);color:var(--text);padding:10px 16px;border-radius:999px;font-size:13.5px;opacity:0;pointer-events:none;transition:all .25s;z-index:50;max-width:92vw;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+#toast button{margin-left:10px}
+footer{color:var(--dim);font-size:12px;text-align:center;padding:30px 20px 40px;border-top:1px solid var(--line)}
+@media (max-width:860px){.cols{grid-template-columns:1fr}.hero{grid-template-columns:140px 1fr;gap:16px;padding:16px}}
+@media (max-width:640px){
+  .wrap{padding:0 14px}
+  .topin{gap:10px;padding:10px 0}
+  nav.tabs{margin-left:0;width:100%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+  nav.tabs button{flex:none}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px}
+  .ph-title{font-size:17px}
+  .hero{grid-template-columns:1fr}.hero .poster{max-width:180px}
+  .brand p{display:none}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap topin">
+  <a class="brand" href="#discover"><span class="mark">NM</span><div><h1>Picture House</h1><p>Nick Moody's watchlist</p></div></a>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-view="discover" aria-selected="true">Discover</button>
+    <button role="tab" data-view="towatch" aria-selected="false">To Watch<span class="n" id="n-towatch"></span></button>
+    <button role="tab" data-view="seen" aria-selected="false">Seen<span class="n" id="n-seen"></span></button>
+    <button role="tab" data-view="import" aria-selected="false">Import</button>
+    <button role="tab" data-view="settings" aria-selected="false">Settings</button>
+  </nav>
+</div></header>
+
+<main class="wrap" id="app">
+  <div id="filterbar">
+    <div class="toolbar">
+      <div class="seg" role="group" aria-label="Type">
+        <button data-type="all" aria-pressed="true">All</button><button data-type="movie" aria-pressed="false">Films</button><button data-type="series" aria-pressed="false">Series</button>
+      </div>
+      <label class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Search titles, reasons, tags…" autocomplete="off"></label>
+      <button class="btn" id="btn-shuffle" title="Shuffle the order (weighted by match score)">⤮ Shuffle</button>
+      <button class="btn primary" id="btn-surprise">✦ Surprise me</button>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <section class="view" id="view-discover">
+    <div id="surprise"></div>
+    <div class="grid" id="grid-discover"></div>
+    <div class="more"><button class="btn" id="btn-more" hidden>Show more</button></div>
+  </section>
+
+  <section class="view" id="view-towatch" hidden>
+    <div class="grid" id="grid-towatch"></div>
+  </section>
+
+  <section class="view" id="view-seen" hidden>
+    <h2 class="sec">Seen</h2>
+    <p class="lede">Nothing here is ever recommended. Your taste-profile titles and the fixed already-seen list are always included; anything you import or mark as watched can be removed.</p>
+    <div class="row" style="margin:0 0 16px;gap:30px">
+      <div><div class="stat" id="seen-count">0</div><div class="statl">titles seen</div></div>
+      <div><div class="stat" id="seen-user-count">0</div><div class="statl">from your library</div></div>
+      <div><div class="stat" id="ni-count">0</div><div class="statl">not interested</div></div>
+    </div>
+    <label class="search" style="max-width:420px;margin-bottom:12px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="seen-q" type="search" placeholder="Search seen titles…"></label>
+    <div class="list" id="seen-list"></div>
+    <div class="more"><button class="btn sm" id="seen-more" hidden>Show all</button></div>
+    <details><summary>Not interested (<span id="ni-count2">0</span>)</summary><div class="list" id="ni-list"></div></details>
+  </section>
+
+  <section class="view" id="view-import" hidden>
+    <h2 class="sec">Import your Stremio library</h2>
+    <p class="lede">Paste a plain list of titles (one per line; years, bullets and blank lines are fine) or Stremio API JSON. Everything imported counts as seen, is never suggested, and is pulled out of To Watch automatically.</p>
+    <div class="cols">
+      <div class="panel">
+        <h3>Paste box</h3>
+        <p class="help">Examples: <code>Kes (1969)</code>, <code>• The Long Good Friday</code>, or JSON like <code>{"result":[{"_id":"tt0064541","name":"Kes","type":"movie"}]}</code>.</p>
+        <textarea id="paste" spellcheck="false" placeholder="Chinatown (1974)&#10;- Deadwood&#10;Frieren: Beyond Journey's End&#10;&#10;…or paste Stremio JSON"></textarea>
+        <div class="row">
+          <button class="btn primary" id="btn-import">Import as seen</button>
+          <label class="btn ghost" style="cursor:pointer">Load file…<input type="file" id="paste-file" accept=".txt,.json,.csv,text/plain,application/json" hidden></label>
+          <button class="btn ghost" id="btn-paste-clear">Clear</button>
+        </div>
+        <div class="msg" id="import-msg"></div>
+      </div>
+      <div class="panel">
+        <h3>Sync from Stremio <span class="badge">optional</span></h3>
+        <p class="help">Signs in to <code>api.strem.io</code> directly from this page and pulls your library. Your password is never stored. If the request is blocked, use the paste box instead.</p>
+        <form id="stremio-form" autocomplete="on">
+          <label class="f" for="st-email">Email</label><input type="email" id="st-email" autocomplete="username">
+          <label class="f" for="st-pass">Password</label><input type="password" id="st-pass" autocomplete="current-password">
+          <div class="row"><label class="check"><input type="checkbox" id="st-remember"> Remember sign-in (stores only the auth key)</label></div>
+          <div class="row">
+            <button class="btn primary" type="submit" id="st-go">Sync library</button>
+            <button class="btn" type="button" id="st-resync" hidden>Sync with saved key</button>
+            <button class="btn ghost danger" type="button" id="st-forget" hidden>Forget key</button>
+          </div>
+        </form>
+        <div class="msg" id="st-msg"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="view-settings" hidden>
+    <h2 class="sec">Settings</h2>
+    <p class="lede">Everything is stored in this browser. Nothing leaves it except optional calls to TMDB and Stremio.</p>
+    <div class="cols">
+      <div>
+        <div class="panel">
+          <h3>TMDB posters &amp; synopses</h3>
+          <p class="help">Paste a free TMDB key: a v3 <em>API key</em> or a v4 <em>API Read Access Token</em>. Posters, ratings and synopses load for visible cards and are cached. Without a key you get typographic cards.</p>
+          <label class="f" for="tmdb-key">TMDB key or token</label>
+          <input type="password" id="tmdb-key" placeholder="v3 api_key or v4 bearer token" autocomplete="off" spellcheck="false">
+          <div class="row">
+            <button class="btn primary" id="tmdb-save">Save &amp; test</button>
+            <button class="btn ghost" id="tmdb-clear-key">Remove key</button>
+            <button class="btn ghost" id="tmdb-clear-cache">Clear cache (<span id="tmdb-cache-n">0</span>)</button>
+          </div>
+          <div class="msg" id="tmdb-msg"></div>
+        </div>
+        <div class="panel">
+          <h3>Stremio add-on</h3>
+          <p class="help">Builds a static Stremio add-on (manifest + catalogs) from your current suggestions and To Watch list, leaving out anything seen or not interested. Unzip it into your GitHub Pages repo (it contains an <code>addon/</code> folder) and push.</p>
+          <label class="f" for="addon-limit">Suggestions per catalog</label>
+          <input type="text" id="addon-limit" value="100" inputmode="numeric" style="max-width:120px">
+          <div class="row"><button class="btn primary" id="btn-addon">Export Stremio add-on (.zip)</button><button class="btn" id="btn-addon-data">Export data for build-addon.js</button></div>
+          <div class="msg" id="addon-msg"></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <h3>Backup</h3>
+          <p class="help">Export seen, To Watch, not-interested and settings (secrets excluded) as JSON. Importing a backup replaces what's here.</p>
+          <div class="row"><label class="check"><input type="checkbox" id="exp-cache"> Include TMDB cache</label></div>
+          <div class="row">
+            <button class="btn primary" id="btn-export">Export JSON</button>
+            <label class="btn" style="cursor:pointer">Import JSON…<input type="file" id="imp-file" accept=".json,application/json" hidden></label>
+          </div>
+          <div class="msg" id="backup-msg"></div>
+        </div>
+        <div class="panel">
+          <h3>Reset</h3>
+          <p class="help">Wipes everything this app stored in this browser and reloads the 20 starter picks.</p>
+          <button class="btn danger" id="btn-reset">Reset all data…</button>
+        </div>
+        <div class="panel">
+          <h3>About the engine</h3>
+          <p class="help" id="about"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>Picture House · built for Nick Moody · works offline · posters via TMDB when enabled (this product uses the TMDB API but is not endorsed or certified by TMDB)</footer>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script id="app-core">
+/* ====================================================================
+   Picture House: data + pure engine (no DOM). Also loaded by
+   build-addon.js and the node tests.
+   ==================================================================== */
+(function (root) {
+'use strict';
+// ---- Taste profile (drives scoring; its titles count as already seen) ----
+const TASTE_RAW = {
+ "anchors": {
+  "Herzog": {
+   "label": "Werner Herzog's films",
+   "tags": [
+    "arthouse",
+    "documentary"
+   ]
+  },
+  "Kurosawa": {
+   "label": "Kurosawa",
+   "tags": [
+    "samurai",
+    "classic",
+    "arthouse"
+   ]
+  },
+  "Louis Theroux": {
+   "label": "Louis Theroux's documentaries",
+   "tags": [
+    "documentary"
+   ]
+  }
+ },
+ "categories": [
+  {
+   "id": "arthouse",
+   "label": "Arthouse & classic cinema",
+   "weight": 1,
+   "tags": [
+    "arthouse",
+    "classic",
+    "noir",
+    "crime",
+    "western",
+    "samurai"
+   ],
+   "anchors": [
+    "Herzog",
+    "Kurosawa",
+    "Chinatown",
+    "The French Connection"
+   ]
+  },
+  {
+   "id": "brit-comedy",
+   "label": "British comedy",
+   "weight": 1,
+   "tags": [
+    "british-comedy",
+    "comedy"
+   ],
+   "anchors": [
+    "The Young Ones",
+    "Peep Show",
+    "Stath Lets Flats",
+    "That Mitchell and Webb Look",
+    "Little Britain",
+    "Bad Education"
+   ]
+  },
+  {
+   "id": "crime-tv",
+   "label": "Crime & prestige TV",
+   "weight": 1.1,
+   "tags": [
+    "crime",
+    "prestige-tv",
+    "thriller"
+   ],
+   "anchors": [
+    "Slow Horses",
+    "Top Boy",
+    "Love/Hate",
+    "Gangs of London",
+    "The Deuce",
+    "The Wire",
+    "Severance",
+    "Justified",
+    "Andor",
+    "Mr. Robot",
+    "Mad Men",
+    "Deadwood"
+   ]
+  },
+  {
+   "id": "anime",
+   "label": "Anime",
+   "weight": 1,
+   "tags": [
+    "anime"
+   ],
+   "anchors": [
+    "Berserk",
+    "Frieren",
+    "Dan Da Dan",
+    "Jujutsu Kaisen",
+    "Solo Leveling",
+    "Demon Slayer",
+    "Hunter x Hunter",
+    "Code Geass",
+    "Megalobox",
+    "Chainsaw Man"
+   ]
+  },
+  {
+   "id": "docs",
+   "label": "Documentaries",
+   "weight": 0.9,
+   "tags": [
+    "documentary"
+   ],
+   "anchors": [
+    "Louis Theroux",
+    "The Act of Killing",
+    "Harlan County USA",
+    "Hoop Dreams"
+   ]
+  },
+  {
+   "id": "realism",
+   "label": "British working-class realism",
+   "weight": 1,
+   "tags": [
+    "realism"
+   ],
+   "anchors": [
+    "Kes",
+    "Nil by Mouth",
+    "Scum",
+    "Made in Britain",
+    "Fish Tank"
+   ]
+  },
+  {
+   "id": "action",
+   "label": "Mean action",
+   "weight": 0.9,
+   "tags": [
+    "action"
+   ],
+   "anchors": [
+    "The Raid 2",
+    "Riki-Oh: The Story of Ricky",
+    "Oldboy",
+    "Predator"
+   ]
+  }
+ ],
+ "tagWeights": {
+  "crime": 1,
+  "prestige-tv": 1,
+  "british-comedy": 1,
+  "anime": 0.9,
+  "arthouse": 1,
+  "classic": 0.8,
+  "western": 0.8,
+  "samurai": 0.8,
+  "documentary": 0.8,
+  "realism": 1,
+  "action": 0.8,
+  "thriller": 0.6,
+  "noir": 0.7,
+  "sci-fi": 0.4,
+  "war": 0.5,
+  "horror": 0.3,
+  "comedy": 0.5
+ }
+};
+// [title, year, type(m|s), tags, imdb|null, {aka}?]
+TASTE_RAW.titles = [
+["Chinatown",1974,"m","crime noir classic","tt0071315"],
+["The French Connection",1971,"m","crime classic action","tt0067116"],
+["The Young Ones",1982,"s","british-comedy","tt0083505"],
+["Peep Show",2003,"s","british-comedy","tt0387764"],
+["Stath Lets Flats",2018,"s","british-comedy","tt7524382"],
+["That Mitchell and Webb Look",2006,"s","british-comedy","tt0499410",{"aka":["Mitchell and Webb","That Mitchell and Webb Sound","That Mitchell & Webb Look"]}],
+["Little Britain",2003,"s","british-comedy","tt0358856"],
+["Bad Education",2012,"s","british-comedy","tt2337840"],
+["Slow Horses",2022,"s","thriller prestige-tv","tt5875444"],
+["Top Boy",2011,"s","crime realism prestige-tv","tt1830379",{"aka":["Top Boy: Summerhouse"]}],
+["Love/Hate",2010,"s","crime prestige-tv","tt1625724"],
+["Gangs of London",2020,"s","crime action prestige-tv","tt7661390"],
+["The Deuce",2017,"s","crime prestige-tv","tt4998350"],
+["The Wire",2002,"s","crime prestige-tv","tt0306414"],
+["Severance",2022,"s","sci-fi prestige-tv thriller","tt11280740"],
+["Justified",2010,"s","crime western prestige-tv","tt1489428"],
+["Andor",2022,"s","sci-fi prestige-tv","tt9253284",{"aka":["Star Wars: Andor"]}],
+["Mr. Robot",2015,"s","thriller prestige-tv","tt4158110"],
+["Mad Men",2007,"s","prestige-tv","tt0804503"],
+["Deadwood",2004,"s","western prestige-tv","tt0348914"],
+["Berserk",1997,"s","anime action","tt0318871"],
+["Frieren",2023,"s","anime","tt22248376",{"aka":["Frieren: Beyond Journey's End","Sousou no Frieren"]}],
+["Dan Da Dan",2024,"s","anime action","tt30217403",{"aka":["Dandadan"]}],
+["Jujutsu Kaisen",2020,"s","anime action","tt12343534"],
+["Solo Leveling",2024,"s","anime action","tt21209876"],
+["Demon Slayer",2019,"s","anime action","tt9335498",{"aka":["Demon Slayer: Kimetsu no Yaiba","Kimetsu no Yaiba"]}],
+["Hunter x Hunter",2011,"s","anime action","tt2098220"],
+["Code Geass",2006,"s","anime sci-fi","tt0994314",{"aka":["Code Geass: Lelouch of the Rebellion"]}],
+["Megalobox",2018,"s","anime action","tt7965802"],
+["Chainsaw Man",2022,"s","anime action horror","tt13616990"],
+["Louis Theroux's Weird Weekends",1998,"s","documentary","tt0217229"],
+["The Act of Killing",2012,"m","documentary","tt2375605"],
+["Harlan County USA",1976,"m","documentary","tt0074605",{"aka":["Harlan County, U.S.A."]}],
+["Hoop Dreams",1994,"m","documentary","tt0110057"],
+["Kes",1969,"m","realism classic","tt0064541"],
+["Nil by Mouth",1997,"m","realism","tt0119792"],
+["Scum",1979,"m","realism crime","tt0079871"],
+["Made in Britain",1982,"m","realism","tt0084287"],
+["Fish Tank",2009,"m","realism","tt1232776"],
+["The Raid 2",2014,"m","action","tt2265171",{"aka":["The Raid 2: Berandal"]}],
+["Riki-Oh: The Story of Ricky",1991,"m","action","tt0102293",{"aka":["Riki-Oh","Story of Ricky","The Story of Ricky"]}],
+["Oldboy",2003,"m","action thriller","tt0364569"],
+["Predator",1987,"m","action sci-fi","tt0093773"],
+["Predator 2",1990,"m","action sci-fi","tt0100403"],
+["Predators",2010,"m","action sci-fi","tt1424381"],
+["The Predator",2018,"m","action sci-fi","tt3829266"],
+["Prey",2022,"m","action sci-fi","tt11866324"],
+["Predator: Badlands",2025,"m","action sci-fi","tt31227572"],
+["Predator: Killer of Killers",2025,"m","action sci-fi anime","tt36463894"]
+];
+// ---- Explicit ALREADY SEEN list: never recommended. [title, year, type, imdb|null, {aka}?] ----
+const ALREADY_SEEN_RAW = [
+["Top Boy",2011,"s","tt1830379"],
+["Severance",2022,"s","tt11280740"],
+["Peep Show",2003,"s","tt0387764"],
+["The Wire",2002,"s","tt0306414"],
+["Blue Lights",2023,"s","tt14466018"],
+["Chainsaw Man",2022,"s","tt13616990"],
+["Shōgun",2024,"s","tt2788316",{"aka":["Shogun"]}],
+["La Haine",1995,"m","tt0113247"],
+["Oldboy",2003,"m","tt0364569"],
+["Perfect Blue",1997,"m","tt0156887"],
+["Withnail & I",1987,"m","tt0094336"],
+["Sorcerer",1977,"m","tt0076740"]
+];
+// ---- Curated catalogue. [title, year, type(m|s), tags, related titles (| separated), hook, imdb|null, {aka}?]
+// IMDb ids were checked against IMDb's title data (title + year + type); omitted where unverifiable. ----
+const CATALOGUE_RAW = [
+["Aguirre, the Wrath of God",1972,"m","arthouse classic","Herzog|Sorcerer","Kinski drifting down the Amazon into madness: Herzog at his most elemental","tt0068182"],
+["Fitzcarraldo",1982,"m","arthouse classic","Herzog|Sorcerer|Aguirre, the Wrath of God","a steamship dragged over a mountain; obsession as spectacle","tt0083946"],
+["Stroszek",1977,"m","arthouse","Herzog|Harlan County USA","Herzog's desolate, oddly funny American dream gone sour in Wisconsin","tt0075276"],
+["Nosferatu the Vampyre",1979,"m","arthouse horror classic","Herzog|Aguirre, the Wrath of God","Kinski's plague-rat Dracula; eerie, beautiful and mournful","tt0079641"],
+["The Enigma of Kaspar Hauser",1974,"m","arthouse classic","Herzog|Stroszek","Bruno S. as the foundling whose innocence exposes society's absurdities","tt0071691"],
+["Cobra Verde",1987,"m","arthouse","Fitzcarraldo|Herzog|Fitzcarraldo","the last and most feverish Herzog–Kinski collaboration","tt0094888"],
+["Grizzly Man",2005,"m","documentary arthouse","Stroszek|Herzog|The Act of Killing","Herzog turns a bear obsessive's footage into a meditation on nature's indifference","tt0427312"],
+["Little Dieter Needs to Fly",1997,"m","documentary","Herzog|Grizzly Man","a downed pilot retraces his escape through the Laotian jungle, on location","tt0145046"],
+["Encounters at the End of the World",2007,"m","documentary","Herzog|Grizzly Man","Antarctica's dreamers and misfits, plus the famously doomed penguin","tt1093824"],
+["Into the Abyss",2011,"m","documentary crime","The Jinx: The Life and Deaths of Robert Durst|Herzog|Louis Theroux|The Act of Killing","Herzog on death row in Texas: quietly devastating","tt1972663"],
+["Burden of Dreams",1982,"m","documentary","Fitzcarraldo|Herzog|Fitzcarraldo|Sorcerer","Les Blank's record of the insane Fitzcarraldo shoot, Herzog raging at the jungle","tt0083702"],
+["My Best Fiend",1999,"m","documentary","Herzog|Aguirre, the Wrath of God","Herzog on his volcanic partnership with Klaus Kinski","tt0200849"],
+["Bad Lieutenant: Port of Call New Orleans",2009,"m","crime","Herzog|The French Connection","Nicolas Cage unleashed in Herzog's hallucinatory bent-cop odyssey","tt1095217"],
+["Lessons of Darkness",1992,"m","documentary arthouse","Herzog|The Act of Killing","Kuwait's burning oilfields filmed as apocalyptic science fiction","tt0104706"],
+["Stalker",1979,"m","arthouse sci-fi classic","Herzog|Severance","Tarkovsky's slow, hypnotic trek into the Zone","tt0079944"],
+["Andrei Rublev",1966,"m","arthouse classic","Herzog|Kurosawa","Tarkovsky's medieval epic; the bell-casting finale is unforgettable","tt0060107"],
+["Come and See",1985,"m","war arthouse","The Act of Killing|Scum","the most harrowing war film ever made, through a Belarusian boy's eyes","tt0091251"],
+["Apocalypse Now",1979,"m","war classic","Sorcerer|Herzog|Aguirre, the Wrath of God","upriver into madness, the same fever that grips Sorcerer's jungle","tt0078788"],
+["Paris, Texas",1984,"m","arthouse","Stroszek|Chinatown","Wenders and Harry Dean Stanton in a sun-bleached American elegy","tt0087884"],
+["The Battle of Algiers",1966,"m","war arthouse classic","Andor|The Act of Killing","insurgency filmed like newsreel; a key reference point for Andor","tt0058946"],
+["Z",1969,"m","thriller arthouse classic","The Battle of Algiers|Andor","Costa-Gavras's furious political-assassination thriller","tt0065234"],
+["Army of Shadows",1969,"m","war arthouse classic","Andor|Le Samouraï","Melville's Resistance cells: bleak, cold and heroic, pure Andor","tt0064040"],
+["Woman in the Dunes",1964,"m","arthouse classic","Kurosawa|Severance","a man trapped in a sand pit; a hypnotic existential parable","tt0058625"],
+["Onibaba",1964,"m","arthouse horror classic","Kurosawa|Throne of Blood","two women survive in the reeds of war-torn Japan; erotic, eerie, ferocious","tt0058430"],
+["Cure",1997,"m","horror thriller arthouse","Perfect Blue|Memories of Murder","Kiyoshi Kurosawa's hypnotic serial-killer chiller","tt0123948"],
+["Seven Samurai",1954,"m","samurai classic action","Kurosawa|Shōgun","the template for every team-up movie; three and a half hours that fly","tt0047478"],
+["Yojimbo",1961,"m","samurai classic","Kurosawa|Shōgun|Deadwood","Mifune plays two gangs against each other; the western's favourite source","tt0055630"],
+["Sanjuro",1962,"m","samurai classic","Kurosawa|Yojimbo","Yojimbo's wry sequel, with one of cinema's great final duels","tt0056443"],
+["Throne of Blood",1957,"m","samurai classic arthouse","Kurosawa|Shōgun","Macbeth in feudal fog, ending with Mifune under a hail of arrows","tt0050613"],
+["Ran",1985,"m","samurai classic war arthouse","Kurosawa|Shōgun","King Lear as a colour-drenched apocalypse","tt0089881"],
+["High and Low",1963,"m","crime classic thriller","Kurosawa|The French Connection|Chinatown","a kidnap drama that turns into a gripping police procedural","tt0057565"],
+["Stray Dog",1949,"m","crime noir classic","Kurosawa|The French Connection","a rookie cop hunts his stolen pistol through sweltering postwar Tokyo","tt0041699"],
+["The Bad Sleep Well",1960,"m","crime classic","Kurosawa|Chinatown","corporate corruption and revenge: Kurosawa's Hamlet in a salaryman suit","tt0054460"],
+["Kagemusha",1980,"m","samurai classic war","Kurosawa|Ran","a thief doubles for a dead warlord in Kurosawa's late-period epic","tt0080979"],
+["The Hidden Fortress",1958,"m","samurai classic","Kurosawa|Andor","the rollicking adventure George Lucas borrowed for Star Wars","tt0051808"],
+["Ikiru",1952,"m","arthouse classic","Kurosawa","a dying bureaucrat searches for meaning; Kurosawa's most humane film","tt0044741"],
+["Rashomon",1950,"m","arthouse classic crime","Kurosawa","four contradictory accounts of one crime in the forest","tt0042876"],
+["Red Beard",1965,"m","arthouse classic","Kurosawa|Ikiru","Mifune's last Kurosawa role, as a gruff clinic doctor","tt0058888"],
+["Dersu Uzala",1975,"m","arthouse classic","Kurosawa|Herzog","a Siberian hunter and an army surveyor; Kurosawa goes full Herzog","tt0071411"],
+["Harakiri",1962,"m","samurai classic","Shōgun|Kurosawa","Kobayashi strips the samurai code bare; Nakadai's quiet fury is staggering","tt0056058"],
+["Samurai Rebellion",1967,"m","samurai classic","Harakiri|Harakiri|Kurosawa|Shōgun","Mifune defies his clan in Kobayashi's slow-boiling revolt","tt0061847"],
+["The Sword of Doom",1966,"m","samurai classic action","Harakiri|Harakiri|Kurosawa|Shōgun","Nakadai as a nihilist swordsman; the finale is pure carnage","tt0060277"],
+["Lady Snowblood",1973,"m","samurai action","Riki-Oh: The Story of Ricky|Shōgun","snowy, blood-geysering revenge that Kill Bill borrowed wholesale","tt0158714"],
+["Lone Wolf and Cub: Sword of Vengeance",1972,"m","samurai action","Riki-Oh: The Story of Ricky|Berserk","disgraced executioner, baby cart, arterial spray","tt0068815"],
+["13 Assassins",2010,"m","samurai action","Seven Samurai|The Raid 2|Shōgun","Takashi Miike's epic battle finale is a masterclass in mayhem","tt1436045"],
+["Zatoichi",2003,"m","samurai action","Shōgun|Kurosawa","Takeshi Kitano's blind swordsman: deadpan, bloody, with a tap-dance finale","tt0363226"],
+["The Twilight Samurai",2002,"m","samurai arthouse","Shōgun|Kurosawa","Yoji Yamada's aching portrait of a low-rank samurai","tt0351817"],
+["The Conversation",1974,"m","crime thriller classic","Chinatown|The French Connection","Gene Hackman's paranoid surveillance expert, Coppola between Godfathers","tt0071360"],
+["Mean Streets",1973,"m","crime classic","Chinatown|The French Connection","Scorsese's Little Italy breakthrough with De Niro as a live wire","tt0070379"],
+["Taxi Driver",1976,"m","crime classic","The French Connection|Chinatown","1970s New York rot through Travis Bickle's eyes","tt0075314"],
+["Dog Day Afternoon",1975,"m","crime classic","The French Connection|Chinatown","Pacino's bank job goes sideways into a media circus","tt0072890"],
+["Serpico",1973,"m","crime classic","The French Connection|The Wire","one honest cop against a bent NYPD","tt0070666"],
+["The Friends of Eddie Coyle",1973,"m","crime classic","The French Connection|The Wire","Robert Mitchum's small-time Boston gunrunner squeezed by cops and crooks","tt0070077"],
+["Night Moves",1975,"m","crime noir classic","Five Easy Pieces|Chinatown|The French Connection","Gene Hackman's LA private eye drifts into a murky Florida Keys mystery","tt0073453"],
+["The Long Goodbye",1973,"m","crime noir classic","The Last Detail|Chinatown","Altman's shaggy, sardonic Marlowe, Elliott Gould mumbling through 70s LA","tt0070334"],
+["Klute",1971,"m","crime thriller classic","Chinatown|The Conversation","Pakula's paranoid noir, with Jane Fonda magnificent","tt0067309"],
+["The Parallax View",1974,"m","thriller classic","Chinatown|Mr. Robot","Pakula's conspiracy nightmare, with a chilling assassin-recruitment sequence","tt0071970"],
+["The Taking of Pelham One Two Three",1974,"m","crime classic","Serpico|The French Connection","Walter Matthau vs subway hijackers: sweaty, funny 70s New York","tt0072251"],
+["Point Blank",1967,"m","crime noir classic","The Driver|The French Connection|Chinatown","Lee Marvin's icy revenge in Boorman's fractured modernist noir","tt0062138"],
+["Thief",1981,"m","crime classic","Collateral|The French Connection|Chinatown","Michael Mann's debut: James Caan's safecracker with a Tangerine Dream score","tt0083190"],
+["Straight Time",1978,"m","crime classic","The Last Detail|The French Connection|Scum","Dustin Hoffman's parolee slides back into crime; raw and unsentimental","tt0078326"],
+["Charley Varrick",1973,"m","crime classic","The French Connection","Don Siegel's lean heist-gone-wrong with Walter Matthau","tt0069865"],
+["The Driver",1978,"m","crime action classic","The French Connection","Walter Hill's minimalist getaway-driver noir, Drive's blueprint","tt0077474"],
+["Prince of the City",1981,"m","crime classic","Report to the Commissioner|Serpico|Serpico|The Wire","Lumet's epic of an NYPD informant: The Wire's spiritual ancestor","tt0082945"],
+["Blue Collar",1978,"m","crime classic realism","Killer of Sheep|Harlan County USA|The Wire","Schrader's Detroit autoworkers rob their own union","tt0077248"],
+["The Offence",1973,"m","crime classic","Serpico|The French Connection|Nil by Mouth","Sean Connery's brutalised detective cracks in Lumet's harrowing interrogation drama","tt0070468"],
+["To Live and Die in L.A.",1985,"m","crime action","French Connection II|The French Connection","Friedkin's neon French Connection follow-up, with a wrong-way freeway chase","tt0090180"],
+["Heat",1995,"m","crime action","Collateral|Thief|The French Connection|Thief","Mann's LA epic: Pacino, De Niro and that downtown shootout","tt0113277"],
+["Get Carter",1971,"m","crime classic","The French Connection|Gangs of London","Michael Caine's Newcastle revenge: grim, brilliant British noir","tt0067128"],
+["The Long Good Friday",1980,"m","crime classic","Gangs of London|Get Carter","Bob Hoskins' London gangland empire collapses over one Easter weekend","tt0081070"],
+["Mona Lisa",1986,"m","crime","The Long Good Friday|Gangs of London","Bob Hoskins as a soft-hearted driver in Neil Jordan's seedy London noir","tt0091538"],
+["Sexy Beast",2000,"m","crime","Nil by Mouth|Gangs of London","Ray Winstone's retired safecracker vs Ben Kingsley's terrifying Don Logan","tt0203119"],
+["Le Samouraï",1967,"m","crime arthouse noir classic","Le cercle rouge|Chinatown|Yojimbo","Alain Delon's hitman, all ritual and silence: Melville's cool masterpiece","tt0062229"],
+["Le Cercle Rouge",1970,"m","crime classic noir","Le Samouraï|The French Connection","Melville's nearly wordless half-hour jewel heist","tt0065531"],
+["Rififi",1955,"m","crime noir classic","Le cercle rouge|Le Cercle Rouge|The French Connection","the heist film's founding text, with its silent safecracking sequence","tt0048021"],
+["The Wages of Fear",1953,"m","thriller classic","Hell Drivers|Sorcerer","the Clouzot original: desperate men, trucks of nitroglycerine, unbearable tension","tt0046268"],
+["A Prophet",2009,"m","crime arthouse","Scum|Top Boy","Tahar Rahim rises through a French prison: Scum meets The Godfather","tt1235166"],
+["City of God",2002,"m","crime","Top Boy|La Haine","Rio favela gang epic, kinetic and devastating","tt0317248"],
+["Amores Perros",2000,"m","crime arthouse","La Haine|City of God","Iñárritu's Mexico City triptych, bound by one car crash","tt0245712"],
+["Les Misérables",2019,"m","crime realism","La Haine|Top Boy","Ladj Ly's banlieue powder keg, La Haine for the 2010s","tt10199590"],
+["Sicario",2015,"m","crime thriller action","The French Connection|Gangs of London","Villeneuve's border-war thriller; the Juárez convoy scene is unbearable","tt3397884"],
+["Good Time",2017,"m","crime","Mean Streets|The French Connection","the Safdies' neon all-night scramble with Robert Pattinson","tt4846232"],
+["Uncut Gems",2019,"m","crime","Mean Streets|Good Time|The French Connection","Adam Sandler's gambling jeweller in a two-hour panic attack","tt5727208"],
+["Election",2005,"m","crime","Brother|Gangs of London","Johnnie To's triad-succession thriller: politics by baton and machete","tt0434008"],
+["Exiled",2006,"m","crime action western","Brother|The Wild Bunch|The Raid 2","Johnnie To's Macau hitmen shoot-out, a Peckinpah western in all but name","tt0796212"],
+["Infernal Affairs",2002,"m","crime thriller","Gangs of London|The French Connection","moles on both sides of the Hong Kong police; tighter than The Departed","tt0338564"],
+["Drug War",2012,"m","crime action","The French Connection|Brother","Johnnie To's procedural of a mainland narcotics sting, ending in a staggering shoot-out","tt2165735"],
+["Pusher",1996,"m","crime realism","Nil by Mouth|Scum","Refn's handheld Copenhagen debut: a small-time dealer's week from hell","tt0117407"],
+["Sátántangó",1994,"m","arthouse","Werckmeister Harmonies|Herzog","Béla Tarr's seven-hour mud-soaked Hungarian epic, the monument behind Werckmeister Harmonies","tt0111341"],
+["The Turin Horse",2011,"m","arthouse","Werckmeister Harmonies|Stroszek|Herzog","Béla Tarr's last film: wind, potatoes and the end of the world","tt1316540"],
+["Burning",2018,"m","thriller arthouse","The Wailing|Memories of Murder|Oldboy","Lee Chang-dong's slow-burn mystery; its final minutes are unforgettable","tt7282468"],
+["Memories of Murder",2003,"m","crime thriller","The Wailing|Oldboy|Chinatown","Bong Joon-ho's serial-killer procedural: funny, then gutting","tt0353969"],
+["Mother",2009,"m","crime thriller","Memories of Murder|Oldboy","Bong's mother turns detective to clear her son","tt1216496"],
+["The Chaser",2008,"m","crime thriller action","The Wailing|Oldboy","an ex-cop pimp hunts a killer through Seoul; relentless","tt1190539"],
+["I Saw the Devil",2010,"m","action thriller horror","Oldboy|The Raid 2","Choi Min-sik back as a monster in an endless revenge spiral","tt1588170"],
+["The Yellow Sea",2010,"m","action crime","The Wailing|The Chaser|The Raid 2","Na Hong-jin's hatchet-fight chase thriller","tt1230385"],
+["Sympathy for Mr. Vengeance",2002,"m","crime thriller","Oldboy","Park Chan-wook's first Vengeance film, colder and crueller than Oldboy","tt0310775"],
+["Lady Vengeance",2005,"m","crime thriller","Oldboy","Park's operatic closer to the Vengeance trilogy","tt0451094"],
+["A Bittersweet Life",2005,"m","action crime","Oldboy|The Raid 2","Kim Jee-woon's stylish gangster-revenge ballet","tt0456912"],
+["New World",2013,"m","crime","Gangs of London|Oldboy","an undercover cop deep inside a Korean syndicate: gorgeous and brutal","tt2625030"],
+["The Man from Nowhere",2010,"m","action crime","Oldboy|The Raid 2","a quiet pawnbroker with a past tears through Seoul's traffickers","tt1527788"],
+["The Villainess",2017,"m","action","The Raid 2|Oldboy","first-person opening massacre, motorbike sword fights","tt6777338"],
+["Battles Without Honor and Humanity",1973,"m","crime action classic","The French Connection|Gangs of London","Fukasaku's handheld postwar yakuza chaos","tt0070246"],
+["Violent Cop",1989,"m","crime action","Brother|The French Connection|Oldboy","Kitano's debut: a deadpan, pitiless detective","tt0098360"],
+["Sonatine",1993,"m","crime arthouse","Brother|Violent Cop|Oldboy","yakuza on a beach holiday before the massacre: Kitano's masterpiece","tt0108188"],
+["Tokyo Drifter",1966,"m","crime action arthouse","Youth of the Beast|A Colt Is My Passport|Le Samouraï|Oldboy","Seijun Suzuki's pop-art yakuza fever dream","tt0061101"],
+["Branded to Kill",1967,"m","crime arthouse","Youth of the Beast|Tokyo Drifter|Le Samouraï|Oldboy","the gloriously deranged hitman film that got Suzuki fired","tt0061882"],
+["Hard Boiled",1992,"m","action crime","The Raid 2","John Woo's teahouse and hospital shootouts: peak Hong Kong action","tt0104684"],
+["The Killer",1989,"m","action crime","Hard Boiled|The Raid 2","Chow Yun-fat, doves and bullet ballet","tt0097202"],
+["Bullet in the Head",1990,"m","action war","Hard Boiled|The Raid 2","Woo's most harrowing film: three friends torn apart in Vietnam","tt0099426"],
+["The Raid",2011,"m","action","The Raid 2","the tower-block original, in case you went straight to the sequel","tt1872204"],
+["The Night Comes for Us",2018,"m","action","The Raid 2","Timo Tjahjanto pits Joe Taslim against Iko Uwais; maybe the most brutal action film ever","tt6116856"],
+["Headshot",2016,"m","action","The Raid 2","Iko Uwais in the Mo Brothers' vicious amnesiac revenge","tt5147214"],
+["Dredd",2012,"m","action sci-fi","The Raid 2|Predator","a tower-block siege, slo-mo drug and Karl Urban's chin; criminally underseen","tt1343727"],
+["Ichi the Killer",2001,"m","action horror","Riki-Oh: The Story of Ricky|Oldboy","Miike's most notorious splatter-yakuza nightmare","tt0296042"],
+["Battle Royale",2000,"m","action thriller","Riki-Oh: The Story of Ricky|Chainsaw Man","Fukasaku's schoolkids-on-an-island kill-or-die","tt0266308"],
+["Mad Max: Fury Road",2015,"m","action","Predator|The Raid 2","a two-hour chase that never lets up","tt1392190"],
+["Mad Max 2",1981,"m","action","Mad Max: Fury Road|Predator","The Road Warrior: the purest post-apocalyptic chase film","tt0082694",{"aka":["The Road Warrior","Mad Max 2: The Road Warrior"]}],
+["RoboCop",1987,"m","action sci-fi","Predator","Verhoeven's ultraviolent corporate satire","tt0093870"],
+["Assault on Precinct 13",1976,"m","action classic","Predator|The French Connection","Carpenter's besieged police station: Rio Bravo in the ghetto","tt0074156"],
+["Escape from New York",1981,"m","action sci-fi","Predator","Snake Plissken in a walled-off Manhattan","tt0082340"],
+["Mandy",2018,"m","action horror","Riki-Oh: The Story of Ricky|Berserk","Nicolas Cage's chainsaw revenge in a psychedelic metal hellscape","tt6998518"],
+["Bone Tomahawk",2015,"m","western horror","Predator|Deadwood","a slow-burn western that ends in unforgettable savagery","tt2494362"],
+["The Good, the Bad and the Ugly",1966,"m","western classic","Deadwood|Yojimbo","Leone's sprawling Civil War treasure hunt","tt0060196"],
+["Once Upon a Time in the West",1968,"m","western classic","Deadwood|Justified","Leone's operatic masterpiece, Morricone at his peak","tt0064116"],
+["The Wild Bunch",1969,"m","western classic action","Deadwood|The French Connection","Peckinpah's elegiac bloodbath","tt0065214"],
+["McCabe & Mrs. Miller",1971,"m","western classic arthouse","Deadwood","Altman's muddy, snowbound frontier town: Deadwood's spiritual ancestor","tt0067411"],
+["Pat Garrett & Billy the Kid",1973,"m","western classic","The Wild Bunch|Deadwood","Peckinpah's mournful last word on the frontier, with Dylan on the soundtrack","tt0070518"],
+["Ride the High Country",1962,"m","western classic","Justified|Deadwood","Peckinpah's autumnal tale of two old gunmen","tt0056412"],
+["Unforgiven",1992,"m","western","Deadwood|Justified","Eastwood demolishes the myth of the gunfighter","tt0105695"],
+["The Outlaw Josey Wales",1976,"m","western classic","Justified|Deadwood","Eastwood's grim post-Civil War revenge odyssey","tt0075029"],
+["The Great Silence",1968,"m","western","The Good, the Bad and the Ugly|Deadwood","Corbucci's snowbound, nihilistic spaghetti with Kinski as a sadistic bounty hunter","tt0063032"],
+["Django",1966,"m","western","Yojimbo|The Good, the Bad and the Ugly|Deadwood","Corbucci's coffin-dragging, mud-caked cult classic","tt0060315"],
+["The Proposition",2005,"m","western","True History of the Kelly Gang|Deadwood","Nick Cave's brutal, poetic outback western","tt0421238"],
+["The Assassination of Jesse James by the Coward Robert Ford",2007,"m","western arthouse","Days of Heaven|Deadwood|Mad Men","a gorgeous, melancholy study of celebrity and envy","tt0443680"],
+["Dead Man",1995,"m","western arthouse","Stroszek|Deadwood|Herzog","Jarmusch's black-and-white acid western with Neil Young's guitar","tt0112817"],
+["No Country for Old Men",2007,"m","crime western","Justified|The French Connection","the Coens' Texas cat-and-mouse with Anton Chigurh","tt0477348"],
+["Hell or High Water",2016,"m","crime western","Justified","bank-robbing brothers vs Jeff Bridges' Texas Ranger","tt2582782"],
+["The Sisters Brothers",2018,"m","western comedy","Deadwood","John C. Reilly and Joaquin Phoenix as bickering hitmen brothers","tt4971344"],
+["High Plains Drifter",1973,"m","western classic","Unforgiven|Deadwood","Eastwood's ghostly, vengeful stranger paints a town red","tt0068699"],
+["Ulzana's Raid",1972,"m","western classic","Deadwood|Predator","Aldrich's brutal, morally murky cavalry pursuit","tt0069436"],
+["The Ballad of Buster Scruggs",2018,"m","western comedy","Deadwood","the Coens' western anthology, from slapstick to dread","tt6412452"],
+["Lonesome Dove",1989,"s","western prestige-tv","Deadwood|Justified","Duvall and Tommy Lee Jones drive cattle north: the great western miniseries","tt0096639"],
+["Godless",2017,"s","western prestige-tv","Deadwood|Justified","Scott Frank's frontier town of widows, Jeff Daniels a monstrous outlaw","tt5516154"],
+["Hell on Wheels",2011,"s","western","Deadwood","railroad-building western, muddy and violent","tt1699748"],
+["The English",2022,"s","western prestige-tv","Deadwood","Hugo Blick's gorgeous, violent revenge western with Emily Blunt","tt11771270"],
+["Nathan Barley",2005,"s","british-comedy","Cunk on Life|The Young Ones|Peep Show","Chris Morris and Charlie Brooker's savage takedown of Shoreditch media idiots","tt0426654"],
+["Garth Marenghi's Darkplace",2004,"s","british-comedy","That Mitchell and Webb Look|The Young Ones","a deliberately terrible 80s horror show, with Holness, Ayoade and Matt Berry","tt0397150"],
+["Brass Eye",1997,"s","british-comedy","Peep Show|That Mitchell and Webb Look","Chris Morris's moral-panic news satire, still shocking","tt0118273"],
+["The Day Today",1994,"s","british-comedy","Brass Eye|That Mitchell and Webb Look","Morris and Iannucci's news parody, where Alan Partridge first hit TV","tt0108740"],
+["I'm Alan Partridge",1997,"s","british-comedy","Peep Show|Bad Education","Partridge in a Norfolk travel tavern: cringe comedy's high-water mark","tt0129690"],
+["The Thick of It",2005,"s","british-comedy","Peep Show|That Mitchell and Webb Look","Malcolm Tucker's swearing as fine art","tt0459159"],
+["In the Loop",2009,"m","british-comedy","Bad Education|The Thick of It|Peep Show","The Thick of It goes to war, with Peter Capaldi in full flow","tt1226774"],
+["Four Lions",2010,"m","british-comedy","Shaun of the Dead|Peep Show","co-written by Peep Show's Jesse Armstrong and Sam Bain with Chris Morris","tt1341167"],
+["The League of Gentlemen",1999,"s","british-comedy horror","Little Britain","Royston Vasey's grotesques: dark, weird and endlessly quotable","tt0184135"],
+["Psychoville",2009,"s","british-comedy horror","The League of Gentlemen|Little Britain","Pemberton and Shearsmith's creepy serial-thriller comedy","tt1305562"],
+["Inside No. 9",2014,"s","british-comedy horror","Little Britain|That Mitchell and Webb Look","Pemberton and Shearsmith's anthology; every episode a new trap","tt2674806"],
+["Bottom",1991,"s","british-comedy","The Young Ones","Rik and Ade's violent, squalid Hammersmith follow-up to The Young Ones","tt0103376"],
+["Blackadder Goes Forth",1989,"s","british-comedy","The Young Ones","the funniest, saddest Blackadder: the trenches, with Rik Mayall's Flashheart","tt0096548"],
+["Black Books",2000,"s","british-comedy","Peep Show","Dylan Moran's drunk, misanthropic bookshop owner","tt0262150"],
+["Spaced",1999,"s","british-comedy","Shaun of the Dead|Peep Show","Pegg, Stevenson and Wright's pop-culture flat-share","tt0187664"],
+["The Mighty Boosh",2004,"s","british-comedy","The Young Ones","surreal, musical Barratt and Fielding nonsense","tt0416394"],
+["Toast of London",2012,"s","british-comedy","Peep Show","Matt Berry's ludicrous voiceover actor: yes, he can hear you, Clem Fandango","tt2432604"],
+["Man Like Mobeen",2017,"s","british-comedy crime","Supacell|Stath Lets Flats|Top Boy","Guz Khan's Small Heath comedy with a gritty crime streak","tt7639280"],
+["This Country",2017,"s","british-comedy","Stath Lets Flats|Bad Education","Cotswolds cousins' mockumentary: bleak, tender, very funny","tt6583806"],
+["People Just Do Nothing",2014,"s","british-comedy","Stath Lets Flats","Kurupt FM's pirate-radio mockumentary","tt3762198"],
+["Big Train",1998,"s","british-comedy","That Mitchell and Webb Look","surreal sketches from the Father Ted writers, including the Stare-Out Championship","tt0178126"],
+["Limmy's Show",2010,"s","british-comedy","That Mitchell and Webb Look|Little Britain","Glasgow's weirdest, most inventive sketch show","tt1495848"],
+["The Office",2001,"s","british-comedy","Peep Show|Bad Education","David Brent, Slough and the birth of cringe mockumentary","tt0290978",{"aka":["The Office (UK)"]}],
+["Father Ted",1995,"s","british-comedy","Peep Show|The Young Ones","three priests on Craggy Island; down with this sort of thing","tt0111958"],
+["Phoenix Nights",2001,"s","british-comedy","Little Britain","Peter Kay's Bolton working men's club","tt0273379"],
+["The Royle Family",1998,"s","british-comedy realism","Peep Show|Kes","a Manchester family on the sofa: comedy as kitchen-sink realism","tt0129711"],
+["Friday Night Dinner",2011,"s","british-comedy","Peep Show|Bad Education","the Goodmans' weekly dinner chaos; Jim next door steals it","tt1844923"],
+["Hot Fuzz",2007,"m","british-comedy action","Spaced|Predator","Edgar Wright's village-cop action parody","tt0425112"],
+["Sightseers",2012,"m","british-comedy horror","Withnail & I|Peep Show","Ben Wheatley's caravan-holiday murder spree","tt2023690"],
+["Nuts in May",1976,"m","british-comedy realism","Withnail & I|Kes","Mike Leigh's excruciating camping holiday",null],
+["Detectorists",2014,"s","british-comedy","The Office|Peep Show","Mackenzie Crook's gentle metal-detecting comedy","tt4082744"],
+["Chewing Gum",2015,"s","british-comedy","Stath Lets Flats|Bad Education","Michaela Coel's chaotic East London estate comedy","tt5097050"],
+["Twenty Twelve",2011,"s","british-comedy","The Thick of It|Bad Education","Olympic-organising bureaucracy mockumentary","tt1861225"],
+["Snuff Box",2006,"s","british-comedy","The Mighty Boosh|That Mitchell and Webb Look","Matt Berry and Rich Fulcher's pitch-black sketch show","tt0775400"],
+["Stewart Lee's Comedy Vehicle",2009,"s","british-comedy","That Mitchell and Webb Look|Peep Show","stand-up deconstructed, with contempt as an art form","tt1227802"],
+["The New Statesman",1987,"s","british-comedy","The Young Ones","Rik Mayall as the monstrous Tory MP Alan B'Stard","tt0094519"],
+["Early Doors",2003,"s","british-comedy","Boiling Point|The Royle Family|Peep Show","a Manchester pub's regulars; small talk as poetry","tt0366010"],
+["The Shield",2002,"s","crime prestige-tv","Sons of Anarchy|The Wire|Justified","the flip side of The Wire: Vic Mackey's corrupt LA strike team","tt0286486"],
+["Kin",2021,"s","crime prestige-tv","Love/Hate|Gangs of London","a Dublin crime family's war with a cartel boss played by Ciarán Hinds","tt13444408"],
+["The Responder",2022,"s","crime prestige-tv realism","Blue Lights|Top Boy","Martin Freeman as a burnt-out Liverpool response cop on the night shift","tt11899030"],
+["Utopia",2013,"s","thriller prestige-tv sci-fi","Misfits|Severance|Mr. Robot","Dennis Kelly's lurid, paranoid Channel 4 conspiracy thriller","tt2384811"],
+["Halt and Catch Fire",2014,"s","prestige-tv","Mad Men|Mr. Robot","AMC's other great period drama: the 80s PC revolution","tt2543312"],
+["Boys from the Blackstuff",1982,"s","realism prestige-tv","Kes|Made in Britain","Alan Bleasdale's Liverpool dole-queue masterpiece","tt0083689"],
+["The Sopranos",1999,"s","crime prestige-tv","The Wire|Deadwood","the show that started it all","tt0141842"],
+["Breaking Bad",2008,"s","crime prestige-tv","Justified|The Wire","a chemistry teacher's descent into kingpin","tt0903747"],
+["Better Call Saul",2015,"s","crime prestige-tv","Mad Men|Breaking Bad","patient, gorgeous character study that some rate above Breaking Bad","tt3032476"],
+["Boardwalk Empire",2010,"s","crime prestige-tv","The Deuce|Mad Men","Prohibition Atlantic City with Steve Buscemi and Michael K. Williams","tt0979432"],
+["The Americans",2013,"s","thriller prestige-tv","Slow Horses|Mad Men","KGB sleepers in 80s suburbia; tense and heartbreaking","tt2149175"],
+["Fargo",2014,"s","crime prestige-tv","Justified","Minnesota-nice anthology crime, each season a new mess","tt2802850"],
+["True Detective",2014,"s","crime prestige-tv","The Wire|Deadwood","season one: McConaughey and Harrelson in Louisiana swamp noir","tt2356777"],
+["Peaky Blinders",2013,"s","crime prestige-tv","Gangs of London|Love/Hate","Birmingham gangsters in razor-lined caps","tt2442560"],
+["Line of Duty",2012,"s","crime prestige-tv","Slow Horses|Blue Lights","AC-12 interrogations as blood sport","tt2303687"],
+["Happy Valley",2014,"s","crime prestige-tv realism","Blue Lights|Love/Hate","Sarah Lancashire's Yorkshire sergeant: British TV at its best","tt3428912"],
+["The Night Of",2016,"s","crime prestige-tv","The Wire|The Deuce","Richard Price's forensic New York murder-trial miniseries","tt2401256"],
+["Show Me a Hero",2015,"s","prestige-tv","The Wire|The Deuce","David Simon's Yonkers housing-war miniseries","tt2492296"],
+["Treme",2010,"s","prestige-tv","The Wire|The Deuce","Simon's post-Katrina New Orleans, the Wire team at its most soulful","tt1279972"],
+["The Corner",2000,"s","realism prestige-tv","The Wire","Simon's raw Baltimore addiction drama, The Wire's prototype","tt0224853"],
+["Homicide: Life on the Street",1993,"s","crime","The Wire","Baltimore murder police, from Simon's book; handheld and ahead of its time","tt0106028"],
+["We Own This City",2022,"s","crime prestige-tv","The Wire","Simon and Pelecanos back in Baltimore with the corrupt Gun Trace Task Force","tt14192504"],
+["Generation Kill",2008,"s","war prestige-tv","The Wire|Andor","Simon and Burns' profane, absurd Iraq invasion","tt0995832"],
+["Oz",1997,"s","crime","The Wire|Scum","HBO's Emerald City prison: Scum stretched over six seasons","tt0118421"],
+["Chernobyl",2019,"s","prestige-tv","Andor|Slow Horses","disaster as slow-motion horror, with Jared Harris superb","tt7366338"],
+["Succession",2018,"s","prestige-tv","Peep Show|Mad Men","Peep Show's Jesse Armstrong turns his cringe genius on a media dynasty","tt7660850"],
+["The Leftovers",2014,"s","prestige-tv","Severance|Deadwood","grief after a rapture-like vanishing; strange and overwhelming","tt2699128"],
+["Babylon Berlin",2017,"s","crime prestige-tv","Peaky Blinders|The Deuce","Weimar Berlin noir, decadent and dangerous","tt4378376"],
+["Gomorrah",2014,"s","crime prestige-tv","Top Boy|Love/Hate","Neapolitan Camorra wars: brutal, beautiful, addictive","tt2049116"],
+["ZeroZeroZero",2019,"s","crime prestige-tv","Gomorrah|Gangs of London","one cocaine shipment from Mexico to Calabria, grim and globe-trotting","tt8332438"],
+["Mindhunter",2017,"s","crime prestige-tv","The Deuce|Chinatown","Fincher's FBI profilers in the 70s; the interviews chill","tt5290382"],
+["Barry",2018,"s","crime comedy prestige-tv","Mr. Robot|Peep Show","Bill Hader's hitman-turned-actor gets darker every season","tt5348176"],
+["Rome",2005,"s","prestige-tv war","Deadwood","HBO's gutter-level ancient Rome through two soldiers' eyes","tt0384766"],
+["Taboo",2017,"s","prestige-tv","Peaky Blinders|Gangs of London","Tom Hardy grunting menace through 1814 London","tt3647998"],
+["The Terror",2018,"s","prestige-tv horror","Mad Men|Severance","the Franklin expedition trapped in ice, led by Jared Harris (Mad Men's Lane Pryce)","tt2708480"],
+["Black Mirror",2011,"s","sci-fi thriller","Cunk on Life|Severance|Peep Show","Charlie Brooker's tech-dread anthology","tt2085059"],
+["Dark",2017,"s","sci-fi prestige-tv thriller","Severance|Mr. Robot","German time-loop puzzle box, intricate and grim","tt5753856"],
+["Twin Peaks",1990,"s","prestige-tv arthouse","Severance|Mad Men","Lynch's surreal small-town murder mystery","tt0098936"],
+["Red Riding",2009,"s","crime prestige-tv","Love/Hate|Chinatown","a Yorkshire police-corruption trilogy: British TV's blackest noir",null],
+["Our Friends in the North",1996,"s","prestige-tv realism","Boys from the Blackstuff|Kes","four Newcastle friends across three decades; Craig and Eccleston career-best","tt0115305"],
+["This Is England '86",2010,"s","realism prestige-tv","This Is England|Made in Britain","Meadows' gang return for the World Cup summer","tt1685471"],
+["Southcliffe",2013,"s","realism crime","Nil by Mouth|Top Boy","a devastating small-town shooting drama","tt2446726"],
+["Giri/Haji",2019,"s","crime prestige-tv","Gangs of London|Slow Horses","a Tokyo detective in London's yakuza underworld: stylish and underrated","tt8001106"],
+["Tokyo Vice",2022,"s","crime prestige-tv","Gangs of London|The Wire","a young reporter on Tokyo's yakuza beat","tt2887954"],
+["The Long Shadow",2023,"s","crime prestige-tv","Red Riding|Top Boy","the Yorkshire Ripper hunt told through the victims","tt13323596"],
+["Say Nothing",2024,"s","prestige-tv","Love/Hate|Andor","the Troubles through the Price sisters; radicalisation Andor-style","tt31122777"],
+["Adolescence",2025,"s","realism prestige-tv crime","Top Boy|Fish Tank","single-take episodes about a 13-year-old arrested for murder","tt31806037"],
+["Banshee",2013,"s","action crime","Justified|Gangs of London","pulp small-town noir with Gangs of London-level fight choreography","tt2017109"],
+["Narcos",2015,"s","crime prestige-tv","The Wire|Gangs of London","Escobar's rise and fall, then the Cali cartel","tt2707408"],
+["Sherwood",2022,"s","crime prestige-tv realism","Harlan County USA|Boys from the Blackstuff","murders reopen the scars of the miners' strike in a Nottinghamshire village","tt13994572"],
+["Tinker Tailor Soldier Spy",1979,"s","thriller classic prestige-tv","Slow Horses","Alec Guinness's Smiley in le Carré's great mole hunt","tt0080297"],
+["Smiley's People",1982,"s","thriller classic","Tinker Tailor Soldier Spy|Slow Horses","Guinness returns as Smiley for one last duel with Karla","tt0083480"],
+["Edge of Darkness",1985,"s","thriller prestige-tv","Slow Horses|Mr. Robot","a grieving cop uncovers a nuclear conspiracy: landmark BBC thriller","tt0090424"],
+["The Sandbaggers",1978,"s","thriller classic","Slow Horses","grimy, cynical 70s spy drama, Slow Horses' ancestor","tt0077078"],
+["Mare of Easttown",2021,"s","crime prestige-tv","Happy Valley|The Wire","Kate Winslet's worn-down Pennsylvania detective","tt10155688"],
+["The Penguin",2024,"s","crime prestige-tv","Gangs of London|The Sopranos","Colin Farrell's Oz Cobb as a Sopranos-style gangster saga","tt15435876"],
+["Ripley",2024,"s","crime arthouse prestige-tv","Chinatown|Mad Men","black-and-white Highsmith with Andrew Scott's chilly con man","tt11016042"],
+["Pluribus",2025,"s","sci-fi prestige-tv","Severance|Better Call Saul","Vince Gilligan's eerie mystery with Rhea Seehorn","tt22202452"],
+["Silo",2023,"s","sci-fi prestige-tv","Severance|Andor","an underground society with forbidden questions","tt14688458"],
+["Vinland Saga",2019,"s","anime action","The Northman|Berserk|Frieren","a Viking revenge epic that becomes a rare meditation on escaping violence","tt10233448"],
+["Monster",2004,"s","anime thriller crime","Hunter x Hunter|Code Geass","Madhouse's thriller: a surgeon hunts the boy he saved across post-Wall Germany","tt0434706"],
+["Mob Psycho 100",2016,"s","anime action comedy","Jujutsu Kaisen|Dan Da Dan","ONE's psychic schoolboy, with Bones animation at its most explosive","tt5897304"],
+["Attack on Titan",2013,"s","anime action","Berserk|Chainsaw Man","walled-in humanity versus giants, then far darker","tt2560140"],
+["Fullmetal Alchemist: Brotherhood",2009,"s","anime action","Hunter x Hunter|Code Geass","tight, epic shonen storytelling at its most complete","tt1355642"],
+["Cowboy Bebop",1998,"s","anime sci-fi action","Megalobox|Samurai Champloo","jazz-soaked space bounty hunters, effortlessly cool","tt0213338"],
+["Samurai Champloo",2004,"s","anime samurai action","Shōgun|Demon Slayer","hip-hop samurai road trip from the Cowboy Bebop director","tt0423731"],
+["Mushishi",2005,"s","anime arthouse","Mind Game|Frieren","meditative folk-horror wandering, Frieren's quietest kin","tt0807832"],
+["Death Note",2006,"s","anime thriller","Code Geass","a genius student with a killing notebook versus the detective L","tt0877057"],
+["Parasyte: The Maxim",2014,"s","anime horror action","Chainsaw Man|Jujutsu Kaisen","body-horror aliens and a boy sharing his arm with one","tt3358020",{"aka":["Parasyte -the maxim-"]}],
+["Dorohedoro",2020,"s","anime action horror","Chainsaw Man|Dan Da Dan","grimy, gory and hilarious: Chainsaw Man's closest cousin","tt11147852"],
+["Devilman Crybaby",2018,"s","anime horror action","Mind Game|Chainsaw Man|Berserk","Masaaki Yuasa's apocalyptic, heartbreaking Devilman, a big Chainsaw Man influence","tt6660498"],
+["JoJo's Bizarre Adventure",2012,"s","anime action","Jujutsu Kaisen|Hunter x Hunter","flamboyant, inventive power battles, generation by generation","tt2359704"],
+["Hellsing Ultimate",2006,"s","anime action horror","Berserk|Demon Slayer","gothic vampire carnage at full volume","tt0495212"],
+["Neon Genesis Evangelion",1995,"s","anime sci-fi","Code Geass","giant robots and teenage breakdown; the ending still divides","tt0112159"],
+["Akira",1988,"m","anime sci-fi action","Perfect Blue|Code Geass","Otomo's Neo-Tokyo landmark","tt0094625"],
+["Ghost in the Shell",1995,"m","anime sci-fi","Perfect Blue|Mr. Robot","Oshii's cyberpunk meditation on identity","tt0113568"],
+["Ninja Scroll",1993,"m","anime samurai action","Berserk|Demon Slayer","feudal demon-ninja bloodshed, 90s OVA style","tt0107692"],
+["Sword of the Stranger",2007,"m","anime samurai action","Demon Slayer|Shōgun","some of the finest sword-fight animation ever made","tt1121794"],
+["Paprika",2006,"m","anime arthouse sci-fi","Perfect Blue","Satoshi Kon's dream-invasion fantasia","tt0851578"],
+["Millennium Actress",2001,"m","anime arthouse","Perfect Blue","Kon's love letter to Japanese cinema through one actress's life","tt0291350"],
+["Tokyo Godfathers",2003,"m","anime","Perfect Blue","three homeless Tokyoites find a baby on Christmas Eve; Kon's warmest film","tt0388473"],
+["Paranoia Agent",2004,"s","anime thriller","Perfect Blue","Satoshi Kon's only TV series: a Tokyo panic personified","tt0433722"],
+["Princess Mononoke",1997,"m","anime action","Frieren|Berserk","Miyazaki's most violent and grown-up epic","tt0119698"],
+["Grave of the Fireflies",1988,"m","anime war","Frieren|Kes","Takahata's devastating wartime story of two orphans","tt0095327"],
+["Castlevania",2017,"s","anime action horror","Berserk|Demon Slayer","gory, sharply written vampire-hunting","tt6517102"],
+["Cyberpunk: Edgerunners",2022,"s","anime sci-fi action","Mr. Robot|Chainsaw Man","Studio Trigger's gutting, neon-drenched Night City tragedy","tt12590266"],
+["Blue Eye Samurai",2023,"s","anime samurai action","Shōgun|Berserk","an Edo-period revenge saga, gorgeous and savage","tt13309742"],
+["Pluto",2023,"s","anime sci-fi thriller","Monster|Frieren","Naoki Urasawa's robot murder mystery, from the author of Monster","tt26737616"],
+["Delicious in Dungeon",2024,"s","anime comedy","Frieren","a dungeon crawl about cooking the monsters; Frieren's warm cousin","tt21621494"],
+["Hajime no Ippo",2000,"s","anime action","Megalobox","the definitive boxing anime","tt0481256"],
+["Ashita no Joe",1970,"s","anime action classic","Megalobox","the boxing classic that Megalobox was made to honour","tt1690397"],
+["Ping Pong the Animation",2014,"s","anime","Mind Game|Megalobox|Hunter x Hunter","Yuasa's wildly stylised sports drama","tt3592032"],
+["Dororo",2019,"s","anime samurai action","Demon Slayer|Berserk","Tezuka's demon-hunting ronin reborn with real grit","tt9458304"],
+["Claymore",2007,"s","anime action","Berserk","half-demon swordswomen in a grim dark fantasy","tt0985344"],
+["Vampire Hunter D: Bloodlust",2000,"m","anime action horror","Berserk","gothic, gorgeous vampire western","tt0216651"],
+["Gurren Lagann",2007,"s","anime action sci-fi","Code Geass|Solo Leveling","escalation as an art form","tt0948103"],
+["Golden Kamuy",2018,"s","anime action","Vinland Saga|Berserk","a Hokkaido gold hunt with a Russo-Japanese War veteran: violent, weird, funny","tt8225204"],
+["Made in Abyss",2017,"s","anime","Frieren|Berserk","cute art, harrowing descent","tt7222086"],
+["Psycho-Pass",2012,"s","anime sci-fi crime","Code Geass|Mr. Robot","a surveillance-state police thriller","tt2379308"],
+["Baki",2018,"s","anime action","Riki-Oh: The Story of Ricky|Megalobox","absurdly muscled underground fighting with pure Riki-Oh energy","tt6357658"],
+["Hell's Paradise",2023,"s","anime action","Chainsaw Man|Jujutsu Kaisen","MAPPA's death-row ninja hunt on a monstrous island","tt13911284"],
+["Kaiju No. 8",2024,"s","anime action","Jujutsu Kaisen|Solo Leveling","a monster-cleanup worker becomes the monster","tt21975436"],
+["Trigun",1998,"s","anime action western","Megalobox|Justified","a goofy gunslinger with a tragic streak in a desert space-western","tt0251439"],
+["Black Lagoon",2006,"s","anime action crime","Gangs of London|The Raid 2","mercenary smugglers in a lawless Thai port, all gunplay","tt0962826"],
+["Legend of the Galactic Heroes",1988,"s","anime sci-fi war","Andor|Code Geass","the space-opera epic of politics and war, Andor on a galactic scale","tt0096633"],
+["Look Back",2024,"m","anime","Chainsaw Man","Tatsuki Fujimoto's short, devastating story of two young manga artists","tt31711040"],
+["Fist of the North Star",1984,"s","anime action","Riki-Oh: The Story of Ricky|Berserk","exploding-head post-apocalyptic kung fu: Riki-Oh's anime cousin","tt0091211"],
+["The Look of Silence",2014,"m","documentary","The Emperor's Naked Army Marches On|The Act of Killing","Oppenheimer's companion piece: a victim's brother confronts the killers","tt3521134"],
+["The Thin Blue Line",1988,"m","documentary crime","The Act of Killing|Louis Theroux","Errol Morris's documentary that freed an innocent man","tt0096257"],
+["Grey Gardens",1975,"m","documentary","Louis Theroux","the Maysles' portrait of Big Edie and Little Edie","tt0073076"],
+["Salesman",1969,"m","documentary","Vernon, Florida|Hoop Dreams|Harlan County USA","the Maysles follow door-to-door Bible salesmen","tt0064921"],
+["Gimme Shelter",1970,"m","documentary","Harlan County USA","the Rolling Stones and the disaster at Altamont","tt0065780"],
+["Titicut Follies",1967,"m","documentary","Harlan County USA|Scum","Wiseman inside a Massachusetts prison hospital; banned for decades","tt0062374"],
+["American Movie",1999,"m","documentary comedy","Hoop Dreams|Louis Theroux","Mark Borchardt's DIY horror dream in Wisconsin","tt0181288"],
+["Crumb",1994,"m","documentary","Louis Theroux|Hoop Dreams","Robert Crumb and his extraordinary, troubled family","tt0109508"],
+["Capturing the Friedmans",2003,"m","documentary crime","The Jinx: The Life and Deaths of Robert Durst|The Act of Killing|Louis Theroux","a family's home movies unravel an abuse case","tt0342172"],
+["The King of Kong",2007,"m","documentary comedy","Louis Theroux","the Donkey Kong world-record feud","tt0923752"],
+["The Imposter",2012,"m","documentary crime","Louis Theroux","a con man claims to be a missing Texas boy","tt1966604"],
+["Minding the Gap",2018,"m","documentary","Hoop Dreams","Bing Liu's skateboarding friends growing up in Rockford, Hoop Dreams' heir","tt7476236"],
+["Brother's Keeper",1992,"m","documentary crime","Vernon, Florida|Harlan County USA|Louis Theroux","an elderly farmer accused of killing his brother","tt0103888"],
+["Hearts of Darkness: A Filmmaker's Apocalypse",1991,"m","documentary","Burden of Dreams|Herzog","the chaotic making of Apocalypse Now","tt0102015"],
+["The Jinx",2015,"s","documentary crime","Louis Theroux","Robert Durst on camera, and that bathroom line","tt4299972"],
+["The Staircase",2004,"s","documentary crime","The Jinx: The Life and Deaths of Robert Durst|Louis Theroux|The Jinx","the Michael Peterson trial, twist after twist","tt0388644"],
+["O.J.: Made in America",2016,"m","documentary","Hoop Dreams|The Wire","race, celebrity and LA in one monumental documentary","tt5275892"],
+["When We Were Kings",1996,"m","documentary","Hoop Dreams|Megalobox","Ali and Foreman in Zaire, the Rumble in the Jungle","tt0118147"],
+["Aileen: Life and Death of a Serial Killer",2003,"m","documentary crime","Louis Theroux","Nick Broomfield's harrowing final encounters with Aileen Wuornos","tt0364930"],
+["HyperNormalisation",2016,"m","documentary","Mr. Robot|Severance","Adam Curtis's hypnotic essay on a fake world","tt6156350"],
+["The Arbor",2010,"m","documentary realism","Fish Tank|Kes","Clio Barnard's lip-synced portrait of Bradford playwright Andrea Dunbar","tt1623008"],
+["Man on Wire",2008,"m","documentary","Hoop Dreams","Philippe Petit's wire walk between the Twin Towers","tt1155592"],
+["Senna",2010,"m","documentary","Hoop Dreams","Ayrton Senna told entirely through archive footage","tt1424432"],
+["Tickled",2016,"m","documentary","Louis Theroux","a tickling-video rabbit hole turns genuinely sinister","tt5278506"],
+["Exit Through the Gift Shop",2010,"m","documentary comedy","Louis Theroux","Banksy's slippery street-art prank","tt1587707"],
+["Cartel Land",2015,"m","documentary crime","The Act of Killing|Louis Theroux","vigilantes on both sides of the Mexico border","tt4126304"],
+["Meantime",1983,"m","realism","Made in Britain|Kes","Tim Roth again, with Gary Oldman's skinhead, in Mike Leigh's East End dole drama","tt0082727"],
+["Ratcatcher",1999,"m","realism arthouse","Kes|Fish Tank","Lynne Ramsay's debut: a Glasgow boy during the 1970s bin strike","tt0171685"],
+["This Is England",2006,"m","realism","Made in Britain|Scum","Shane Meadows' 1983 skinhead summer","tt0480025"],
+["Dead Man's Shoes",2004,"m","realism crime","Nil by Mouth|Made in Britain","Paddy Considine's soldier takes revenge on small-town dealers","tt0419677"],
+["A Room for Romeo Brass",1999,"m","realism comedy","This Is England|Kes","Meadows' Nottingham friendship drama with Paddy Considine's unsettling Morell","tt0202559"],
+["Sweet Sixteen",2002,"m","realism crime","Nil by Mouth|Kes","Ken Loach's Greenock teenager dreaming of a better life","tt0313670"],
+["My Name Is Joe",1998,"m","realism","Kes|Nil by Mouth","Loach's Glasgow recovering alcoholic with Peter Mullan","tt0151691"],
+["Riff-Raff",1991,"m","realism comedy","Kes","Loach's building-site comedy-drama with Robert Carlyle","tt0100491"],
+["Naked",1993,"m","realism arthouse","Nil by Mouth|Meantime","David Thewlis's savage, brilliant nighttime London odyssey","tt0107653"],
+["High Hopes",1988,"m","realism comedy","Meantime|Kes","Mike Leigh's Thatcher-era London family","tt0095302"],
+["Red Road",2006,"m","realism thriller","Fish Tank","Andrea Arnold's debut: a CCTV operator in a Glasgow tower block","tt0471030"],
+["American Honey",2016,"m","realism","Fish Tank","Andrea Arnold's road trip with a magazine-selling crew","tt3721936"],
+["Morvern Callar",2002,"m","realism arthouse","Ratcatcher|Fish Tank","Lynne Ramsay and Samantha Morton, drifting from Scotland to Spain","tt0300214"],
+["The Selfish Giant",2013,"m","realism","Kes","Clio Barnard's Bradford scrap-metal boys, the closest thing to Kes in decades","tt2304426"],
+["Starred Up",2013,"m","realism crime","Scum","Jack O'Connell's teen tearaway moved to adult prison: Scum's modern heir","tt2567712"],
+["Bronson",2008,"m","crime arthouse","Scum|Nil by Mouth","Tom Hardy as Britain's most violent prisoner","tt1172570"],
+["Hunger",2008,"m","arthouse realism","Scum|Andor","Steve McQueen's Bobby Sands film, with Fassbender astonishing","tt0986233"],
+["'71",2014,"m","thriller war","Love/Hate|Andor","Jack O'Connell stranded behind the lines in 1971 Belfast","tt2614684",{"aka":["71"]}],
+["Elephant",1989,"m","realism arthouse","Made in Britain|Scum","Alan Clarke's wordless procession of Troubles killings","tt0097270"],
+["The Firm",1989,"m","realism crime","Made in Britain|Scum","Alan Clarke's last film: Gary Oldman as a terrifying football-firm leader",null],
+["Quadrophenia",1979,"m","realism","Scum|The Young Ones","Phil Daniels and Ray Winstone, the same year as Scum, in the Mods-versus-Rockers classic","tt0079766"],
+["Kidulthood",2006,"m","realism crime","Adulthood|Top Boy","Noel Clarke's West London teen-crime drama","tt0435680"],
+["Bullet Boy",2004,"m","realism crime","Supacell|Top Boy","Ashley Walters in Hackney gun-crime realism","tt0385568"],
+["Rocks",2019,"m","realism","Fish Tank|Top Boy","an East London teenager keeps her brother afloat","tt9067182"],
+["Aftersun",2022,"m","arthouse realism","Fish Tank","Charlotte Wells' devastating holiday memory","tt19770238"],
+["Boiling Point",2021,"m","realism","Nil by Mouth|Top Boy","Stephen Graham in a single-take restaurant meltdown","tt11127680"],
+["Cathy Come Home",1966,"m","realism classic","Kes","Ken Loach's TV play about homelessness that shook the nation",null],
+["Poor Cow",1967,"m","realism classic","Kes","Ken Loach's first feature, a young mother in 60s London","tt0062141"],
+["I, Daniel Blake",2016,"m","realism","Kes","Loach's furious benefits-system drama","tt5168192"],
+["Trainspotting",1996,"m","realism comedy","Nil by Mouth|Withnail & I","Edinburgh heroin chic with a Britpop pulse","tt0117951"],
+["Kill List",2011,"m","horror thriller","Dead Man's Shoes|Nil by Mouth","Ben Wheatley's hitman drama descends into folk horror","tt1788391"],
+["Rosetta",1999,"m","realism arthouse","Fish Tank|Kes","the Dardennes' handheld survival drama","tt0200071"],
+["Bicycle Thieves",1948,"m","realism classic","Kes","De Sica's neorealist cornerstone","tt0040522"],
+["The 400 Blows",1959,"m","arthouse classic realism","Kes","Truffaut's troubled schoolboy, Kes's French cousin","tt0053198"]
+];
+// ---- 20 starter picks for the To Watch queue: [title, watched title it relates to, reason] ----
+const SEEDS_RAW = [
+["The Shield","Sons of Anarchy","Kurt Sutter cut his teeth writing Vic Mackey's corrupt LA Strike Team, handheld and relentless for seven seasons"],
+["Kin","Love/Hate","Aidan Gillen (Love/Hate's John Boy) heads a Dublin crime family at war with Ciarán Hinds' heroin kingpin"],
+["The Responder","Blue Lights","Martin Freeman as a burnt-out Liverpool response cop on endless night shifts; written by an ex-copper"],
+["Utopia","Mr. Robot","Dennis Kelly's lurid, paranoid Channel 4 conspiracy thriller: candy-coloured and shockingly violent"],
+["Halt and Catch Fire","Mad Men","AMC's other great period drama: the 80s PC boom through four brilliant, damaged people"],
+["Boys from the Blackstuff","Kes","Alan Bleasdale's 1982 Liverpool dole-queue masterpiece; Yosser Hughes' 'Gizza job' is British TV's rawest cry"],
+["Nathan Barley","Cunk on Life","Charlie Brooker co-wrote it with Chris Morris: a savage 2005 takedown of Shoreditch media idiots"],
+["Garth Marenghi's Darkplace","The Young Ones","the same anarchic spirit: a deliberately terrible 80s horror show with Holness, Ayoade and Matt Berry"],
+["Vinland Saga","Berserk","a Viking revenge epic with Berserk's brutality that becomes a rare meditation on escaping violence"],
+["Monster","Hunter x Hunter","Madhouse's 74-episode thriller: a surgeon hunts the boy he once saved across post-Wall Germany"],
+["The Wages of Fear","Sorcerer","the 1953 Clouzot original: desperate men, trucks of nitroglycerine and unbearable tension"],
+["The Look of Silence","The Act of Killing","Oppenheimer's companion piece, as a victim's brother quietly confronts the men who killed him"],
+["Meantime","Made in Britain","Tim Roth again, alongside Gary Oldman's skinhead, in Mike Leigh's East End dole drama"],
+["Ratcatcher","Fish Tank","Lynne Ramsay's debut: a Glasgow boy during the 1970s bin strike, poetic and piercing, Kes-like in its tenderness"],
+["Samurai Rebellion","Harakiri","Kobayashi and Nakadai again, now with Mifune defying his clan in a slow-boiling revolt that ends in a superb duel"],
+["The Friends of Eddie Coyle","The French Connection","Robert Mitchum's small-time Boston gunrunner squeezed by cops and crooks; the most lived-in crime film of the 70s"],
+["Night Moves","Chinatown","Gene Hackman's LA private eye drifts into a murky Florida Keys mystery, the other great 70s neo-noir"],
+["McCabe & Mrs. Miller","Deadwood","Altman's muddy, snowbound frontier town is Deadwood's spiritual ancestor"],
+["The Night Comes for Us","The Raid 2","Timo Tjahjanto pits Joe Taslim against Iko Uwais; possibly the most brutal action film ever made"],
+["Four Lions","Peep Show","co-written by Peep Show's Jesse Armstrong and Sam Bain with Chris Morris; a jihadi farce that's hilarious and horrifying"]
+];
+
+const TYPE = { m: 'movie', s: 'series' };
+const TAG_LABELS = {
+  'crime': 'Crime', 'prestige-tv': 'Prestige TV', 'british-comedy': 'British Comedy', 'anime': 'Anime', 'documentary': 'Documentary',
+  'arthouse': 'Arthouse', 'classic': 'Classic', 'western': 'Western', 'samurai': 'Samurai', 'action': 'Action', 'realism': 'Realism',
+  'thriller': 'Thriller', 'sci-fi': 'Sci-Fi', 'war': 'War', 'horror': 'Horror', 'comedy': 'Comedy', 'noir': 'Noir'
+};
+
+// ---------- normalisation ----------
+function stripAccents(s) { return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+const YEAR_TAIL = /\s*[\(\[]\s*(?:(?:tv\s*)?(?:mini[- ]?series|series|movie|film|special)\s*)?((?:18|19|20)\d{2})(?:\s*[-–—]\s*(?:(?:18|19|20)\d{2})?\s*)?[\)\]]\s*$/i;
+function cleanTitle(raw) {
+  let s = String(raw == null ? '' : raw).replace(/\u00a0/g, ' ').trim();
+  for (let i = 0; i < 2; i++) s = s.replace(YEAR_TAIL, '').trim();
+  return s;
+}
+function titleYear(raw) { const m = String(raw || '').match(YEAR_TAIL); return m ? +m[1] : null; }
+function normKey(title) {
+  let s = stripAccents(cleanTitle(title)).toLowerCase();
+  s = s.replace(/[×✕]/g, 'x').replace(/&/g, ' and ').replace(/\+/g, ' and ');
+  s = s.replace(/^\s*the\s+/, '').replace(/,\s*the\s*$/, '');
+  const k = s.replace(/[^a-z0-9]+/g, '');
+  return k || s.replace(/\s+/g, '');
+}
+function prefixKey(title) {
+  const parts = cleanTitle(title).split(/\s*[:：]\s+|\s+[-–—]\s+/);
+  if (parts.length < 2) return null;
+  const k = normKey(parts[0]);
+  return k.length >= 3 ? k : null;
+}
+function itemKeys(item) {
+  const keys = new Set([normKey(item.title)]);
+  (item.aka || []).forEach(a => keys.add(normKey(a)));
+  keys.delete('');
+  return keys;
+}
+function validImdb(id) { return typeof id === 'string' && /^tt\d{5,10}$/.test(id) ? id : null; }
+
+// ---------- index / matching ----------
+function makeIndex(items) {
+  const strong = new Map(), prefix = new Map(), imdb = new Map();
+  const push = (m, k, it) => { if (!m.has(k)) m.set(k, []); m.get(k).push(it); };
+  for (const it of items || []) {
+    if (!it || !it.title) continue;
+    itemKeys(it).forEach(k => push(strong, k, it));
+    const pk = prefixKey(it.title); if (pk) push(prefix, pk, it);
+    if (it.imdb && !imdb.has(it.imdb)) imdb.set(it.imdb, it);
+  }
+  return { strong, prefix, imdb };
+}
+// Match by IMDb id, or by normalised title (a seen "Frieren: Beyond Journey's End" also covers
+// "Frieren"). If both sides carry IMDb ids and they differ, a title match alone is rejected
+// (so "The New World" (2005) never hides "New World" (2013)).
+function lookup(index, item) {
+  if (!item || !item.title) return null;
+  if (item.imdb && index.imdb.has(item.imdb)) return index.imdb.get(item.imdb);
+  for (const k of itemKeys(item)) {
+    const cands = (index.strong.get(k) || []).concat(index.prefix.get(k) || []);
+    for (const hit of cands) {
+      if (hit.imdb && item.imdb && hit.imdb !== item.imdb) continue;
+      return hit;
+    }
+  }
+  return null;
+}
+function sameTitle(a, b) { return !!lookup(makeIndex([{ title: a }]), { title: b }); }
+
+// ---------- built-in data ----------
+function slug(s) { return normKey(s); }
+const CATALOGUE = CATALOGUE_RAW.map(e => {
+  const [title, year, t, tags, rel, hook, imdb, opt] = e;
+  const o = { id: slug(title) + '-' + year, title, year, type: TYPE[t], tags: tags.split(/\s+/).filter(Boolean), rel: rel.split('|').filter(Boolean), hook, imdb: validImdb(imdb) };
+  if (opt && opt.aka) o.aka = opt.aka.slice();
+  return o;
+});
+const PROFILE_SEEN = TASTE_RAW.titles.map(e => {
+  const [title, year, t, tags, imdb, opt] = e;
+  const o = { title, year, type: TYPE[t], tags: tags.split(/\s+/), imdb: validImdb(imdb), source: 'profile', note: 'taste profile' };
+  if (opt && opt.aka) o.aka = opt.aka.slice();
+  return o;
+}).concat(ALREADY_SEEN_RAW.map(e => {
+  const [title, year, t, imdb, opt] = e;
+  const o = { title, year, type: TYPE[t], tags: [], imdb: validImdb(imdb), source: 'profile', note: 'already seen' };
+  if (opt && opt.aka) o.aka = opt.aka.slice();
+  return o;
+}));
+const CAT_INDEX = makeIndex(CATALOGUE);
+const PROFILE_INDEX = makeIndex(PROFILE_SEEN);
+const ANCHORS = TASTE_RAW.anchors;
+function findCatalogue(title) { return lookup(CAT_INDEX, { title }); }
+function resolveRelItem(rel) { return findCatalogue(rel) || lookup(PROFILE_INDEX, { title: rel }) || { title: rel }; }
+const SEEDS = SEEDS_RAW.map(([title, relTitle, text]) => {
+  const c = findCatalogue(title);
+  if (!c) throw new Error('Seed not in catalogue: ' + title);
+  const p = lookup(PROFILE_INDEX, { title: relTitle });
+  const name = p ? p.title : relTitle;
+  return { item: c, relTitle: name, reason: 'Because you watched ' + name + ': ' + text };
+});
+
+// ---------- library parsing ----------
+function includeLibraryItem(it) {
+  if (!it || typeof it !== 'object') return false;
+  const st = it.state || {};
+  if (it.removed) return Number(st.timesWatched) > 0 || Number(st.flaggedWatched) === 1;
+  return true;
+}
+function dedupe(items) {
+  const out = []; const idx = makeIndex([]);
+  for (const it of items) {
+    const hit = lookup(idx, it);
+    if (hit) { if (!hit.imdb && it.imdb) { hit.imdb = it.imdb; idx.imdb.set(it.imdb, hit); } hit.year = hit.year || it.year; hit.type = hit.type || it.type; continue; }
+    const o = Object.assign({}, it); out.push(o);
+    itemKeys(o).forEach(k => { if (!idx.strong.has(k)) idx.strong.set(k, []); idx.strong.get(k).push(o); });
+    if (o.imdb) idx.imdb.set(o.imdb, o);
+  }
+  return out;
+}
+function parseLibraryJSON(data) {
+  let arr = null;
+  if (Array.isArray(data)) arr = data;
+  else if (data && Array.isArray(data.result)) arr = data.result;
+  else if (data && data.result && Array.isArray(data.result.items)) arr = data.result.items;
+  else if (data && Array.isArray(data.items)) arr = data.items;
+  else if (data && Array.isArray(data.library)) arr = data.library;
+  if (!arr) throw new Error('JSON not recognised: expected an array of library items, or an object with a "result" array.');
+  const items = []; let skipped = 0;
+  for (const it of arr) {
+    if (typeof it === 'string') { const t = cleanTitle(it); if (t) items.push({ title: t, year: titleYear(it), type: null, imdb: null }); else skipped++; continue; }
+    const name = it && (it.name || it.title);
+    if (!name || !includeLibraryItem(it)) { skipped++; continue; }
+    const id = validImdb(it._id) || validImdb(it.id) || validImdb(it.imdb_id) || validImdb(it.imdb);
+    let year = Number(it.year) || titleYear(name) || null;
+    if (!year && typeof it.releaseInfo === 'string') { const m = it.releaseInfo.match(/(18|19|20)\d{2}/); if (m) year = +m[0]; }
+    const type = it.type === 'movie' ? 'movie' : it.type === 'series' ? 'series' : (it.type || null);
+    items.push({ title: cleanTitle(name), year, type, imdb: id });
+  }
+  return { items: dedupe(items), skipped, format: 'json' };
+}
+function parseLibraryText(text) {
+  const items = []; let skipped = 0;
+  for (const raw of String(text).split(/\r?\n/)) {
+    let s = raw.replace(/\u00a0/g, ' ').trim();
+    if (!s) continue;
+    s = s.replace(/^(?:[-*•·◦▪▸►>–—+]+\s*|\d{1,3}[.)]\s+|\[\s?[xX✓ ]?\s?\]\s*)+/, '').trim();
+    if (!s) { skipped++; continue; }
+    let imdb = null; const im = s.match(/\b(tt\d{5,10})\b/);
+    if (im) { imdb = im[1]; s = s.replace(/\s*[\(\[]?\s*(?:https?:\/\/\S*?)?tt\d{5,10}\/?\S*\s*[\)\]]?\s*/, ' ').trim(); }
+    let type = null, year = null;
+    if (s.includes('\t') || /\s[|;]\s/.test(s)) {
+      const parts = s.split(/\t|\s[|;]\s/).map(x => x.trim()).filter(Boolean);
+      s = parts[0] || '';
+      for (const p of parts.slice(1)) { if (/^(18|19|20)\d{2}$/.test(p)) year = +p; else if (/^(movie|film)$/i.test(p)) type = 'movie'; else if (/^(series|tv|show)$/i.test(p)) type = 'series'; }
+    }
+    if (/\((?:tv\s*)?(?:mini[- ]?)?series\b/i.test(s)) type = 'series';
+    year = titleYear(s) || year;
+    const dash = s.match(/\s+[-–—]\s+((?:18|19|20)\d{2})\s*$/);
+    if (dash) { year = year || +dash[1]; s = s.slice(0, dash.index); }
+    const title = cleanTitle(s);
+    if (!title || title.length > 200 || /^[\W_]+$/.test(title)) { skipped++; continue; }
+    items.push({ title, year, type, imdb });
+  }
+  return { items: dedupe(items), skipped, format: 'text' };
+}
+function parseLibrary(input) {
+  const text = String(input || '').trim();
+  if (!text) return { items: [], skipped: 0, format: 'empty' };
+  if (/^[\[{]/.test(text)) {
+    let data; try { data = JSON.parse(text); } catch (e) { data = undefined; }
+    if (data !== undefined) return parseLibraryJSON(data);
+    if (text[0] === '{') throw new Error('That looks like JSON but could not be parsed: check it was copied completely.');
+  }
+  return parseLibraryText(text);
+}
+
+// ---------- state ----------
+function blankState() { return { version: 1, seen: [], toWatch: [], notInterested: [], settings: { tmdbKey: '' }, createdAt: Date.now() }; }
+function toWatchEntry(c, reason, at, seed) {
+  const o = { id: c.id || (slug(c.title) + '-' + (c.year || '')), title: c.title, year: c.year || null, type: c.type || null, imdb: c.imdb || null,
+    tags: (c.tags || []).slice(), reason: reason || '', addedAt: at || Date.now(), seed: !!seed };
+  if (c.aka) o.aka = c.aka.slice();
+  return o;
+}
+function initialState(now) {
+  const st = blankState(); now = now || Date.now();
+  SEEDS.forEach((s, i) => st.toWatch.push(toWatchEntry(s.item, s.reason, now - i, true)));
+  return st;
+}
+function allSeen(st) { return PROFILE_SEEN.concat(st.seen || []); }
+function seenIndex(st) { return makeIndex(allSeen(st)); }
+function isSeen(st, item) { return !!lookup(seenIndex(st), item); }
+function isNotInterested(st, item) { return !!lookup(makeIndex(st.notInterested || []), item); }
+// Anything in To Watch that is now seen (or not interested) is pulled out; it is already in seen.
+function reconcile(st) {
+  const idx = seenIndex(st), ni = makeIndex(st.notInterested || []); const moved = [];
+  st.toWatch = (st.toWatch || []).filter(t => {
+    if (lookup(idx, t)) { moved.push(t); return false; }
+    return !lookup(ni, t);
+  });
+  return moved;
+}
+function addSeen(st, items, source, now) {
+  now = now || Date.now(); let added = 0, merged = 0;
+  const idx = makeIndex(st.seen);
+  for (const it of items || []) {
+    if (!it || !it.title) continue;
+    const hit = lookup(idx, it);
+    if (hit) {
+      if (!hit.imdb && validImdb(it.imdb)) { hit.imdb = it.imdb; idx.imdb.set(it.imdb, hit); }
+      hit.year = hit.year || it.year || null; hit.type = hit.type || it.type || null;
+      if (source === 'watched') hit.watchedAt = now;
+      merged++; continue;
+    }
+    const rec = { title: it.title, year: it.year || null, type: it.type || null, imdb: validImdb(it.imdb), source: source || 'paste', addedAt: now };
+    if (it.aka) rec.aka = it.aka.slice();
+    if (source === 'watched') rec.watchedAt = now;
+    st.seen.push(rec);
+    itemKeys(rec).forEach(k => { if (!idx.strong.has(k)) idx.strong.set(k, []); idx.strong.get(k).push(rec); });
+    if (rec.imdb) idx.imdb.set(rec.imdb, rec);
+    added++;
+  }
+  return { added, merged, moved: reconcile(st) };
+}
+function removeSeen(st, rec) { const i = st.seen.indexOf(rec); if (i >= 0) st.seen.splice(i, 1); }
+function addToWatch(st, item, reason, now) {
+  if (lookup(makeIndex(st.toWatch), item)) return false;
+  st.toWatch.unshift(toWatchEntry(item, reason, now)); return true;
+}
+function removeToWatch(st, id) { st.toWatch = st.toWatch.filter(t => t.id !== id); }
+function markWatched(st, item, now) { removeToWatch(st, item.id); return addSeen(st, [item], 'watched', now); }
+function markNotInterested(st, item, now) {
+  if (!lookup(makeIndex(st.notInterested), item)) {
+    const r = { title: item.title, year: item.year || null, type: item.type || null, imdb: item.imdb || null, at: now || Date.now() };
+    if (item.aka) r.aka = item.aka.slice();
+    st.notInterested.push(r);
+  }
+  removeToWatch(st, item.id); reconcile(st);
+}
+function restoreNotInterested(st, rec) { const i = st.notInterested.indexOf(rec); if (i >= 0) st.notInterested.splice(i, 1); }
+
+// ---------- recommendation engine ----------
+function tagAffinity(st) {
+  const aff = Object.assign({}, TASTE_RAW.tagWeights), counts = {};
+  for (const s of st.seen || []) { const c = lookup(CAT_INDEX, s); if (c) c.tags.forEach(t => counts[t] = (counts[t] || 0) + 1); }
+  for (const t in counts) aff[t] = (aff[t] || 0.3) + Math.min(1.2, counts[t] * 0.08);
+  return aff;
+}
+const RECENT_DAYS = 45;
+function recommend(st, opts) {
+  opts = opts || {}; const now = opts.now || Date.now();
+  const sIdx = seenIndex(st), niIdx = makeIndex(st.notInterested || []), twIdx = makeIndex(st.toWatch || []);
+  const aff = tagAffinity(st); const out = [];
+  for (const c of CATALOGUE) {
+    if (lookup(sIdx, c) || lookup(niIdx, c)) continue;
+    if (!opts.includeToWatch && lookup(twIdx, c)) continue;
+    let score = 0, best = null;
+    for (const r of c.rel) {
+      let cand = null;
+      if (ANCHORS[r]) cand = { kind: 'anchor', label: ANCHORS[r].label, contrib: 1.6 };
+      else {
+        const hit = lookup(sIdx, resolveRelItem(r));
+        if (!hit) continue;
+        let contrib = hit.source === 'profile' ? 2.2 : 3, recent = false;
+        if (hit.watchedAt) { const age = (now - hit.watchedAt) / 864e5; if (age >= 0 && age < RECENT_DAYS) { contrib += 6 * (1 - age / RECENT_DAYS); recent = true; } }
+        cand = { kind: 'title', title: hit.title, contrib, recent };
+      }
+      score += cand.contrib;
+      if (!best || cand.contrib > best.contrib) best = cand;
+    }
+    score += 0.55 * c.tags.map(t => aff[t] || 0).sort((a, b) => b - a).slice(0, 3).reduce((a, b) => a + b, 0);
+    let reason;
+    if (best && best.kind === 'title') reason = 'Because you watched ' + best.title + ': ' + c.hook;
+    else if (best) reason = "Because you're into " + best.label + ': ' + c.hook;
+    else { const t = c.tags.slice().sort((a, b) => (aff[b] || 0) - (aff[a] || 0))[0]; reason = 'Fits your taste for ' + (TAG_LABELS[t] || t).toLowerCase() + ': ' + c.hook; }
+    out.push({ item: c, score: Math.round(score * 100) / 100, reason, relTitle: best && best.kind === 'title' ? best.title : null, recent: !!(best && best.recent) });
+  }
+  out.sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title));
+  return filterList(out, opts, r => r.item, r => r.reason);
+}
+function filterList(list, opts, getItem, getReason) {
+  const type = opts.type && opts.type !== 'all' ? opts.type : null;
+  const tags = opts.tags && opts.tags.length ? opts.tags : null;
+  const q = opts.q ? stripAccents(String(opts.q)).toLowerCase().trim() : '';
+  return list.filter(x => {
+    const it = getItem(x);
+    if (type && it.type !== type) return false;
+    if (tags && !tags.some(t => (it.tags || []).includes(t))) return false;
+    if (q) {
+      const hay = stripAccents([it.title, (it.aka || []).join(' '), it.year, (it.tags || []).map(t => TAG_LABELS[t] || t).join(' '), getReason(x) || ''].join(' ')).toLowerCase();
+      if (!q.split(/\s+/).every(w => hay.includes(w))) return false;
+    }
+    return true;
+  });
+}
+function surprise(list, rand) { rand = rand || Math.random; if (!list.length) return null; const top = list.slice(0, Math.min(15, list.length)); return top[Math.floor(rand() * top.length)]; }
+function weightedShuffle(list, rand) {
+  rand = rand || Math.random;
+  return list.map(x => ({ x, k: Math.pow(rand(), 1 / Math.max(0.1, x.score || 1)) })).sort((a, b) => b.k - a.k).map(o => o.x);
+}
+
+// ---------- export / import ----------
+function exportData(st, tmdbCache) {
+  const settings = Object.assign({}, st.settings); delete settings.tmdbKey; delete settings.stremioAuthKey;
+  const out = { app: 'picture-house', version: 1, exportedAt: new Date().toISOString(), seen: st.seen, toWatch: st.toWatch, notInterested: st.notInterested, settings };
+  if (tmdbCache) out.tmdbCache = tmdbCache;
+  return out;
+}
+function importData(data, keep) {
+  if (!data || typeof data !== 'object' || !Array.isArray(data.seen) || !Array.isArray(data.toWatch)) throw new Error('Not a Picture House export (missing seen / toWatch arrays).');
+  const st = blankState();
+  st.seen = data.seen.filter(x => x && x.title).map(x => Object.assign({}, x, { imdb: validImdb(x.imdb) }));
+  st.toWatch = data.toWatch.filter(x => x && x.title).map(x => Object.assign({ id: slug(x.title) + '-' + (x.year || '') }, x, { imdb: validImdb(x.imdb) }));
+  st.notInterested = (data.notInterested || []).filter(x => x && x.title);
+  st.settings = Object.assign({ tmdbKey: '' }, data.settings || {}, keep || {});
+  reconcile(st);
+  return st;
+}
+
+// ---------- static Stremio add-on ----------
+const ADDON_ID = 'com.nickmoody.watchlist';
+const ADDON_CATALOGS = {
+  movie: { main: 'nicks-picks-films', towatch: 'nicks-towatch-films', name: "Nick's Picks: Films", twName: "Nick's To Watch: Films" },
+  series: { main: 'nicks-picks-series', towatch: 'nicks-towatch-series', name: "Nick's Picks: Series", twName: "Nick's To Watch: Series" }
+};
+function addonManifest(genresByType, version) {
+  const cat = (type, id, name, genres) => {
+    const c = { type, id, name };
+    if (genres && genres.length) c.extra = [{ name: 'genre', isRequired: false, options: genres }];
+    return c;
+  };
+  return {
+    id: ADDON_ID, version: version || '1.0.0', name: "Nick's Picks",
+    description: "Nick Moody's personal recommendations and To Watch queue: arthouse, 70s crime, westerns, samurai, British comedy, prestige TV, anime, docs and British realism. Generated by Picture House.",
+    resources: ['catalog'], types: ['movie', 'series'], idPrefixes: ['tt'],
+    catalogs: [
+      cat('movie', ADDON_CATALOGS.movie.main, ADDON_CATALOGS.movie.name, (genresByType || {}).movie),
+      cat('series', ADDON_CATALOGS.series.main, ADDON_CATALOGS.series.name, (genresByType || {}).series),
+      cat('movie', ADDON_CATALOGS.movie.towatch, ADDON_CATALOGS.movie.twName),
+      cat('series', ADDON_CATALOGS.series.towatch, ADDON_CATALOGS.series.twName)
+    ],
+    behaviorHints: { configurable: false, configurationRequired: false }
+  };
+}
+function metaFor(item, reason) {
+  const genres = (item.tags || []).map(t => TAG_LABELS[t]).filter(Boolean);
+  let description = String(reason || '').trim();
+  if (description && !/[.!?]$/.test(description)) description += '.';
+  if (!description && item.hook) description = item.hook.charAt(0).toUpperCase() + item.hook.slice(1) + '.';
+  const m = { id: item.imdb, type: item.type, name: item.title, poster: 'https://images.metahub.space/poster/medium/' + item.imdb + '/img', posterShape: 'poster', description, genres };
+  if (item.year) m.releaseInfo = String(item.year);
+  return m;
+}
+function buildAddon(st, opts) {
+  opts = opts || {}; const limit = Math.max(1, Math.min(500, Number(opts.limit) || 100));
+  // opts.excludeItems: extra titles treated as seen for filtering only (they never shape the reasons).
+  const sIdx = seenIndex(st), niIdx = makeIndex(st.notInterested || []), exIdx = makeIndex(opts.excludeItems || []);
+  const recs = recommend(st, { now: opts.now }).filter(r => !lookup(exIdx, r.item));
+  const tw = (st.toWatch || []).filter(t => !lookup(sIdx, t) && !lookup(niIdx, t) && !lookup(exIdx, t)).map(t => {
+    const c = lookup(CAT_INDEX, t);
+    const item = Object.assign({}, c || {}, t, { imdb: validImdb(t.imdb) || (c && c.imdb) || null, tags: t.tags && t.tags.length ? t.tags : (c ? c.tags : []), hook: c ? c.hook : '' });
+    return { item, reason: t.reason };
+  });
+  const files = {}, counts = {}, genresByType = {};
+  const withId = arr => arr.filter(r => validImdb(r.item.imdb) && (r.item.type === 'movie' || r.item.type === 'series'));
+  for (const type of ['movie', 'series']) {
+    const ids = ADDON_CATALOGS[type];
+    const twT = withId(tw.filter(r => r.item.type === type));
+    const used = new Set(twT.map(r => r.item.imdb));
+    const recT = withId(recs.filter(r => r.item.type === type)).filter(r => !used.has(r.item.imdb)).slice(0, limit);
+    const main = twT.concat(recT);
+    files['catalog/' + type + '/' + ids.main + '.json'] = { metas: main.map(r => metaFor(r.item, r.reason)) };
+    files['catalog/' + type + '/' + ids.towatch + '.json'] = { metas: twT.map(r => metaFor(r.item, r.reason)) };
+    counts[ids.main] = main.length; counts[ids.towatch] = twT.length;
+    const tagCount = {};
+    main.forEach(r => (r.item.tags || []).forEach(t => { if (TAG_LABELS[t]) tagCount[t] = (tagCount[t] || 0) + 1; }));
+    const tags = Object.keys(tagCount).sort((a, b) => tagCount[b] - tagCount[a] || a.localeCompare(b));
+    genresByType[type] = tags.map(t => TAG_LABELS[t]);
+    for (const t of tags) files['catalog/' + type + '/' + ids.main + '/genre=' + TAG_LABELS[t] + '.json'] = { metas: main.filter(r => (r.item.tags || []).includes(t)).map(r => metaFor(r.item, r.reason)) };
+  }
+  files['manifest.json'] = addonManifest(genresByType, opts.version);
+  return { files, counts };
+}
+
+const Core = {
+  TASTE: TASTE_RAW, CATALOGUE, PROFILE_SEEN, SEEDS, ANCHORS, TAG_LABELS, ADDON_ID, ADDON_CATALOGS,
+  stripAccents, cleanTitle, titleYear, normKey, prefixKey, makeIndex, lookup, sameTitle, findCatalogue, resolveRelItem,
+  parseLibrary, parseLibraryText, parseLibraryJSON, includeLibraryItem,
+  blankState, initialState, allSeen, seenIndex, isSeen, isNotInterested, addSeen, reconcile, removeSeen,
+  addToWatch, removeToWatch, markWatched, markNotInterested, restoreNotInterested,
+  recommend, filterList, surprise, weightedShuffle, tagAffinity, exportData, importData, buildAddon, addonManifest, metaFor
+};
+root.PictureHouse = Core;
+if (typeof module !== 'undefined' && module.exports) module.exports = Core;
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script id="app-ui">
+/* ====================================================================
+   Picture House: UI
+   ==================================================================== */
+(function () {
+'use strict';
+if (typeof document === 'undefined' || !document.getElementById('app')) return;
+const C = window.PictureHouse;
+const K_STATE = 'ph.state.v1', K_TMDB = 'ph.tmdb.v1', K_AUTH = 'ph.stremioAuth';
+const $ = (s, el) => (el || document).querySelector(s);
+const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+// ---------- storage ----------
+const LS = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { toast('Browser storage is full or blocked: changes may not persist'); return false; } },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} }
+};
+function saveState() { LS.set(K_STATE, JSON.stringify(state)); }
+function loadState() {
+  const raw = LS.get(K_STATE);
+  if (raw) {
+    try { const d = JSON.parse(raw); const st = Object.assign(C.blankState(), d); st.settings = Object.assign({ tmdbKey: '' }, d.settings || {}); C.reconcile(st); return st; }
+    catch (e) { console.warn('Stored data unreadable; starting fresh', e); }
+  }
+  return null;
+}
+let state = loadState();
+if (!state) { state = C.initialState(); saveState(); }
+let tmdbCache = {}; try { tmdbCache = JSON.parse(LS.get(K_TMDB) || '{}') || {}; } catch (e) { tmdbCache = {}; }
+let cacheTimer = null;
+function saveCacheSoon() { clearTimeout(cacheTimer); cacheTimer = setTimeout(() => LS.set(K_TMDB, JSON.stringify(tmdbCache)), 400); }
+
+// ---------- ui state ----------
+const ui = { view: 'discover', type: 'all', tags: [], q: '', shuffled: 0, page: 1, surprise: null, seenQ: '', seenAll: false };
+const PAGE = 48;
+function toast(msg, action) {
+  const t = $('#toast'); t.innerHTML = esc(msg) + (action ? ' <button class="btn sm">' + esc(action.label) + '</button>' : '');
+  if (action) $('button', t).onclick = () => { action.fn(); t.classList.remove('on'); };
+  t.classList.add('on'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('on'), action ? 6000 : 3200);
+}
+function setMsg(el, text, kind) { el.className = 'msg' + (kind ? ' ' + kind : ''); el.textContent = text || ''; }
+
+// ---------- navigation ----------
+function show(view) {
+  ui.view = view; ui.surprise = null;
+  $$('nav.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === view)));
+  $$('.view').forEach(v => { v.hidden = v.id !== 'view-' + view; });
+  $('#filterbar').hidden = !(view === 'discover' || view === 'towatch');
+  $('#btn-shuffle').hidden = $('#btn-surprise').hidden = view !== 'discover';
+  if (location.hash !== '#' + view) history.replaceState(null, '', '#' + view);
+  render();
+}
+$$('nav.tabs button').forEach(b => { b.onclick = () => show(b.dataset.view); });
+window.addEventListener('hashchange', () => { const v = location.hash.slice(1); if (v && v !== ui.view && $('#view-' + v)) show(v); });
+
+// ---------- filters ----------
+$$('.seg button').forEach(b => { b.onclick = () => { ui.type = b.dataset.type; ui.page = 1; ui.shuffled = 0; $$('.seg button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); render(); }; });
+let qTimer; $('#q').addEventListener('input', e => { clearTimeout(qTimer); qTimer = setTimeout(() => { ui.q = e.target.value; ui.page = 1; render(); }, 120); });
+$('#btn-shuffle').onclick = () => { ui.shuffled = 1 + Math.floor(Math.random() * 2147483000); ui.page = 1; render(); toast('Shuffled, weighted towards the strongest matches'); };
+$('#btn-surprise').onclick = () => {
+  const list = C.recommend(state, { type: ui.type, tags: ui.tags, q: ui.q });
+  const pool = ui.surprise ? list.filter(r => r.item.id !== ui.surprise) : list;
+  const pick = C.surprise(pool.length ? pool : list);
+  if (!pick) { toast('Nothing matches these filters'); return; }
+  ui.surprise = pick.item.id; render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+function renderChips(items) {
+  const counts = {}; items.forEach(x => (x.tags || []).forEach(t => { counts[t] = (counts[t] || 0) + 1; }));
+  const order = Object.keys(C.TAG_LABELS).filter(t => counts[t] || ui.tags.includes(t));
+  $('#chips').innerHTML = order.map(t => `<button class="chip" data-tag="${t}" aria-pressed="${ui.tags.includes(t)}">${esc(C.TAG_LABELS[t])}<span class="c">${counts[t] || 0}</span></button>`).join('')
+    + (ui.tags.length ? '<button class="chip" data-clear="1">Clear ✕</button>' : '');
+  $$('#chips .chip').forEach(b => { b.onclick = () => {
+    if (b.dataset.clear) ui.tags = []; else { const t = b.dataset.tag; ui.tags = ui.tags.includes(t) ? ui.tags.filter(x => x !== t) : ui.tags.concat(t); }
+    ui.page = 1; ui.shuffled = 0; render();
+  }; });
+}
+
+// ---------- cards ----------
+function hue(s) { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return [18, 32, 44, 200, 215, 350, 5, 160, 265, 28][h % 10] + (h % 13); }
+function cacheKey(it) { return (it.type || 'x') + ':' + (it.imdb || (C.normKey(it.title) + ':' + (it.year || ''))); }
+function reasonHTML(reason) {
+  const m = /^(Because you watched |Because you're into |Fits your taste for )(.+?): (.*)$/.exec(reason || '');
+  return m ? esc(m[1]) + '<b>' + esc(m[2]) + '</b>: ' + esc(m[3]) : esc(reason);
+}
+function posterHTML(it, idx) {
+  const tm = tmdbCache[cacheKey(it)];
+  const ph = `<div class="ph" style="--h:${hue(it.title)}"><div class="ph-top"><span>${it.type === 'series' ? 'Series' : 'Film'}</span><span>No. ${String(idx + 1).padStart(3, '0')}</span></div><div class="ph-title">${esc(it.title)}</div><div class="ph-rule"></div><div class="ph-year">${esc(it.year || '')}</div></div>`;
+  const img = tm && tm.p ? `<img alt="" loading="lazy" src="https://image.tmdb.org/t/p/w342${esc(tm.p)}" onload="this.classList.add('ok')" onerror="this.remove()">` : '';
+  const rating = tm && tm.r && tm.v > 5 ? `<span class="pill r">★ ${(+tm.r).toFixed(1)}</span>` : '';
+  return ph + img + rating;
+}
+function cardHTML(it, reason, actions, idx, badge) {
+  const tm = tmdbCache[cacheKey(it)];
+  const typeLabel = it.type === 'series' ? 'Series' : it.type === 'movie' ? 'Film' : '';
+  return `<article class="card" data-id="${esc(it.id)}" data-ck="${esc(cacheKey(it))}">
+    <div class="poster${badge ? ' b' : ''}">${posterHTML(it, idx)}${badge || ''}</div>
+    <div class="meta"><h3>${esc(it.title)}</h3>
+      <div class="sub">${esc([it.year, typeLabel].filter(Boolean).join(' · '))}</div>
+      <p class="reason">${reasonHTML(reason)}</p>
+      ${tm && tm.o ? `<p class="overview">${esc(tm.o)}</p>` : ''}
+      <div class="tags">${esc((it.tags || []).map(t => C.TAG_LABELS[t] || t).join(' · '))}</div>
+      <div class="actions">${actions}</div></div></article>`;
+}
+const ACT_REC = `<button class="btn primary" data-act="add">+ To Watch</button><button class="btn" data-act="seenit" title="I've already seen this">Seen it</button><button class="btn ghost danger" data-act="ni" title="Never suggest this again">Not interested</button>`;
+const ACT_TW = `<button class="btn primary" data-act="watched">✓ Watched</button><button class="btn ghost danger" data-act="ni" title="Never suggest this again">Not interested</button><button class="btn ghost" data-act="remove">Remove</button>`;
+
+let recMap = new Map();
+function lcg(seed) { let s = seed % 2147483647; if (s <= 0) s += 2147483646; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+function renderDiscover() {
+  const base = C.recommend(state, { type: ui.type, q: ui.q });
+  renderChips(base.map(r => r.item));
+  let list = C.filterList(base, { tags: ui.tags }, r => r.item, r => r.reason);
+  if (ui.shuffled) list = C.weightedShuffle(list, lcg(ui.shuffled));
+  recMap = new Map(base.map(r => [r.item.id, r]));
+  const sp = ui.surprise && recMap.get(ui.surprise);
+  if (sp) {
+    const it = sp.item, tm = tmdbCache[cacheKey(it)];
+    $('#surprise').innerHTML = `<div class="hero" data-id="${esc(it.id)}" data-ck="${esc(cacheKey(it))}"><div class="poster">${posterHTML(it, 0)}</div>
+      <div class="body"><div class="kicker">✦ Surprise pick</div><h3>${esc(it.title)}</h3><div class="sub">${esc(it.year)} · ${it.type === 'series' ? 'Series' : 'Film'} · match ${sp.score.toFixed(1)}</div>
+      <p class="reason">${reasonHTML(sp.reason)}</p>${tm && tm.o ? `<p class="overview">${esc(tm.o)}</p>` : ''}
+      <div class="tags">${esc(it.tags.map(t => C.TAG_LABELS[t] || t).join(' · '))}</div>
+      <div class="actions">${ACT_REC}<button class="btn ghost" data-act="again">↻ Another</button></div></div>
+      <button class="btn ghost sm x" data-act="close" title="Close">✕</button></div>`;
+  } else $('#surprise').innerHTML = '';
+  const shown = list.slice(0, ui.page * PAGE);
+  $('#grid-discover').innerHTML = shown.length ? shown.map((r, i) => cardHTML(r.item, r.reason, ACT_REC, i, r.recent ? '<span class="pill">New for you</span>' : '')).join('')
+    : `<div class="empty" style="grid-column:1/-1">No suggestions match. Try clearing the filters${state.seen.length ? '' : ', or import your library first'}.</div>`;
+  $('#btn-more').hidden = list.length <= shown.length;
+  $('#btn-more').textContent = `Show more (${list.length - shown.length})`;
+  observe();
+}
+function renderToWatch() {
+  const base = C.filterList(state.toWatch, { type: ui.type, q: ui.q }, t => t, t => t.reason);
+  renderChips(base);
+  const list = C.filterList(base, { tags: ui.tags }, t => t, t => t.reason);
+  $('#grid-towatch').innerHTML = list.length ? list.map((t, i) => cardHTML(t, t.reason, ACT_TW, i, t.seed ? '<span class="pill">Starter pick</span>' : '')).join('')
+    : `<div class="empty" style="grid-column:1/-1">${state.toWatch.length ? 'Nothing matches these filters.' : 'Your queue is empty: add picks from Discover.'}</div>`;
+  observe();
+}
+function uniqueSeenCount() {
+  const idx = C.makeIndex([]); let n = 0;
+  for (const r of C.allSeen(state)) {
+    if (C.lookup(idx, r)) continue; n++;
+    const one = C.makeIndex([r]);
+    one.strong.forEach((v, k) => { if (!idx.strong.has(k)) idx.strong.set(k, []); idx.strong.get(k).push(r); });
+    if (r.imdb) idx.imdb.set(r.imdb, r);
+  }
+  return n;
+}
+function renderSeen() {
+  $('#seen-count').textContent = uniqueSeenCount();
+  $('#seen-user-count').textContent = state.seen.length;
+  $('#ni-count').textContent = $('#ni-count2').textContent = state.notInterested.length;
+  const q = C.stripAccents(ui.seenQ).toLowerCase().trim();
+  const user = state.seen.slice().sort((a, b) => (b.watchedAt || b.addedAt || 0) - (a.watchedAt || a.addedAt || 0));
+  const rows = user.map(r => ({ r, user: true })).concat(C.PROFILE_SEEN.map(r => ({ r, user: false })))
+    .filter(x => !q || C.stripAccents(x.r.title + ' ' + (x.r.year || '')).toLowerCase().includes(q));
+  const lim = ui.seenAll || q ? rows.length : 100;
+  $('#seen-list').innerHTML = rows.slice(0, lim).map(x => `<div class="li"><span class="t">${esc(x.r.title)}${x.r.year ? `<small>${esc(x.r.year)}</small>` : ''}${x.r.type ? `<small>${x.r.type === 'series' ? 'series' : x.r.type === 'movie' ? 'film' : esc(x.r.type)}</small>` : ''}</span>
+      <span class="badge ${x.r.source === 'watched' ? 'w' : ''}">${esc(x.user ? x.r.source : x.r.note)}</span>
+      ${x.user ? `<button class="btn sm ghost danger" data-seen="${state.seen.indexOf(x.r)}">Remove</button>` : '<span class="badge" title="Always treated as seen">locked</span>'}</div>`).join('')
+    || '<div class="li"><span class="t" style="color:var(--muted)">No matches</span></div>';
+  $('#seen-more').hidden = rows.length <= lim;
+  $('#seen-more').textContent = `Show all ${rows.length}`;
+  $$('#seen-list [data-seen]').forEach(b => { b.onclick = () => {
+    const rec = state.seen[+b.dataset.seen]; if (!rec) return;
+    C.removeSeen(state, rec); saveState(); render();
+    toast(`Removed “${rec.title}” from seen`, { label: 'Undo', fn: () => { state.seen.push(rec); C.reconcile(state); saveState(); render(); } });
+  }; });
+  $('#ni-list').innerHTML = state.notInterested.map((r, i) => `<div class="li"><span class="t">${esc(r.title)}${r.year ? `<small>${esc(r.year)}</small>` : ''}</span><button class="btn sm ghost" data-ni="${i}">Restore</button></div>`).join('') || '<div class="li"><span class="t" style="color:var(--muted)">Nothing hidden yet</span></div>';
+  $$('#ni-list [data-ni]').forEach(b => { b.onclick = () => { const r = state.notInterested[+b.dataset.ni]; C.restoreNotInterested(state, r); saveState(); render(); toast(`“${r.title}” can be suggested again`); }; });
+}
+$('#seen-q').addEventListener('input', e => { ui.seenQ = e.target.value; renderSeen(); });
+$('#seen-more').onclick = () => { ui.seenAll = true; renderSeen(); };
+$('#btn-more').onclick = () => { ui.page++; renderDiscover(); };
+function renderCounts() {
+  $('#n-towatch').textContent = state.toWatch.length;
+  $('#n-seen').textContent = uniqueSeenCount();
+  $('#tmdb-cache-n').textContent = Object.keys(tmdbCache).length;
+}
+function render() {
+  renderCounts();
+  if (ui.view === 'discover') renderDiscover();
+  else if (ui.view === 'towatch') renderToWatch();
+  else if (ui.view === 'seen') renderSeen();
+  else if (ui.view === 'settings') renderSettings();
+  else if (ui.view === 'import') renderImport();
+}
+
+// ---------- card actions ----------
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const card = b.closest('[data-id]'); const id = card && card.dataset.id; const act = b.dataset.act;
+  if (act === 'close') { ui.surprise = null; renderDiscover(); return; }
+  if (act === 'again') { $('#btn-surprise').click(); return; }
+  const rec = ui.view === 'discover' ? recMap.get(id) : null;
+  const tw = state.toWatch.find(t => t.id === id);
+  const item = rec ? rec.item : tw; if (!item) return;
+  const snapshot = JSON.stringify(state);
+  const undo = { label: 'Undo', fn: () => { state = Object.assign(C.blankState(), JSON.parse(snapshot)); saveState(); render(); } };
+  if (act === 'add') { C.addToWatch(state, item, rec ? rec.reason : ''); toast(`Added “${item.title}” to To Watch`, undo); }
+  else if (act === 'seenit' || act === 'watched') { C.markWatched(state, item); toast(`Marked “${item.title}” as watched: related picks get a boost`, undo); }
+  else if (act === 'ni') { C.markNotInterested(state, item); toast(`Won't suggest “${item.title}” again`, undo); }
+  else if (act === 'remove') { C.removeToWatch(state, id); toast(`Removed “${item.title}” from To Watch`, undo); }
+  if (ui.surprise === id) ui.surprise = null;
+  saveState(); render();
+});
+
+// ---------- import ----------
+function renderImport() { const key = LS.get(K_AUTH); $('#st-resync').hidden = $('#st-forget').hidden = !key; }
+function doImport(items, source, msgEl, extra) {
+  const res = C.addSeen(state, items, source); saveState(); render();
+  const mv = res.moved.length ? ` ${res.moved.length} moved from To Watch to Seen (${res.moved.slice(0, 4).map(m => m.title).join(', ')}${res.moved.length > 4 ? '…' : ''}).` : '';
+  setMsg(msgEl, `Imported ${items.length} title${items.length === 1 ? '' : 's'}: ${res.added} new, ${res.merged} already known.${mv}${extra || ''}`, 'ok');
+  return res;
+}
+$('#btn-import').onclick = () => {
+  const el = $('#import-msg');
+  try {
+    const r = C.parseLibrary($('#paste').value);
+    if (!r.items.length) { setMsg(el, 'Nothing to import: paste one title per line, or Stremio JSON.', 'err'); return; }
+    doImport(r.items, r.format === 'json' ? 'stremio' : 'paste', el, r.skipped ? ` Skipped ${r.skipped} line(s)/item(s).` : '');
+  } catch (e) { setMsg(el, e.message, 'err'); }
+};
+$('#paste-file').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return; f.text().then(t => { $('#paste').value = t; $('#btn-import').click(); }); };
+$('#btn-paste-clear').onclick = () => { $('#paste').value = ''; setMsg($('#import-msg'), ''); };
+
+async function stremioPost(path, body) {
+  const r = await fetch('https://api.strem.io/api/' + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  let j; try { j = await r.json(); } catch (e) { throw new Error('Stremio returned an unexpected response (HTTP ' + r.status + ').'); }
+  if (j && j.error) { const err = new Error(typeof j.error === 'string' ? j.error : (j.error.message || JSON.stringify(j.error))); err.api = true; throw err; }
+  return j;
+}
+async function stremioSync(authKey, email, password, remember) {
+  const el = $('#st-msg'); const btns = [$('#st-go'), $('#st-resync')]; btns.forEach(b => { b.disabled = true; });
+  setMsg(el, authKey ? 'Fetching library…' : 'Signing in…');
+  try {
+    if (!authKey) {
+      const j = await stremioPost('login', { type: 'Login', email, password, facebook: false });
+      authKey = j && j.result && j.result.authKey;
+      if (!authKey) throw new Error('Signed in, but Stremio returned no auth key.');
+      if (remember) LS.set(K_AUTH, authKey);
+    }
+    setMsg(el, 'Fetching library…');
+    const lib = await stremioPost('datastoreGet', { authKey, collection: 'libraryItem', all: true, ids: [] });
+    const r = C.parseLibraryJSON(lib);
+    doImport(r.items, 'stremio', el, r.skipped ? ` Ignored ${r.skipped} removed/unwatched item(s).` : '');
+  } catch (e) {
+    if (e.api) { if (/session|auth/i.test(e.message) && LS.get(K_AUTH) === authKey) LS.del(K_AUTH); setMsg(el, 'Stremio said: ' + e.message, 'err'); }
+    else if (e instanceof TypeError) setMsg(el, "Couldn't reach api.strem.io: you may be offline, or the browser blocked the cross-origin request (CORS). Use the paste box instead: paste your library titles (or the JSON from Stremio's datastoreGet) and click Import.", 'err');
+    else setMsg(el, e.message, 'err');
+  } finally { btns.forEach(b => { b.disabled = false; }); $('#st-pass').value = ''; renderImport(); }
+}
+$('#stremio-form').onsubmit = e => {
+  e.preventDefault();
+  const email = $('#st-email').value.trim(), pass = $('#st-pass').value;
+  if (!email || !pass) { setMsg($('#st-msg'), 'Enter your Stremio email and password.', 'err'); return; }
+  stremioSync(null, email, pass, $('#st-remember').checked);
+};
+$('#st-resync').onclick = () => { const k = LS.get(K_AUTH); if (k) stremioSync(k); };
+$('#st-forget').onclick = () => { LS.del(K_AUTH); renderImport(); setMsg($('#st-msg'), 'Saved auth key removed.', 'ok'); };
+
+// ---------- TMDB ----------
+function tmdbKey() { return (state.settings.tmdbKey || '').trim(); }
+function isV4(k) { return k.length > 60 && k.split('.').length === 3; }
+async function tmdbFetch(path, params, attempt) {
+  attempt = attempt || 0;
+  const k = tmdbKey(); const u = new URL('https://api.themoviedb.org/3' + path);
+  Object.entries(params || {}).forEach(([a, b]) => u.searchParams.set(a, b));
+  const headers = { accept: 'application/json' };
+  if (isV4(k)) headers.Authorization = 'Bearer ' + k; else u.searchParams.set('api_key', k);
+  const r = await fetch(u.toString(), { headers });
+  if (r.status === 429 && attempt < 3) { await new Promise(res => setTimeout(res, 1200 * (attempt + 1))); return tmdbFetch(path, params, attempt + 1); }
+  if (!r.ok) { const err = new Error('TMDB HTTP ' + r.status); err.status = r.status; throw err; }
+  return r.json();
+}
+function pickBest(arr, it) {
+  if (!arr.length) return null;
+  const n = C.normKey(it.title);
+  const yr = x => +String(x.release_date || x.first_air_date || '').slice(0, 4) || 0;
+  const sc = x => (C.normKey(x.title || x.name || '') === n || C.normKey(x.original_title || x.original_name || '') === n ? 2 : 0) + (it.year && Math.abs(yr(x) - it.year) <= 1 ? 2 : 0) + Math.min(1, (x.vote_count || 0) / 500);
+  return arr.slice().sort((a, b) => sc(b) - sc(a))[0];
+}
+async function tmdbLookup(it) {
+  let res = null; const tv = it.type === 'series';
+  if (it.imdb) {
+    const j = await tmdbFetch('/find/' + it.imdb, { external_source: 'imdb_id' });
+    res = (tv ? (j.tv_results || []).concat(j.movie_results || []) : (j.movie_results || []).concat(j.tv_results || []))[0] || null;
+  }
+  if (!res) {
+    const path = tv ? '/search/tv' : '/search/movie'; const p = { query: C.cleanTitle(it.title), include_adult: 'false' };
+    if (it.year) p[tv ? 'first_air_date_year' : 'year'] = it.year;
+    let arr = (await tmdbFetch(path, p)).results || [];
+    if (!arr.length && it.year) { delete p.year; delete p.first_air_date_year; arr = (await tmdbFetch(path, p)).results || []; }
+    res = pickBest(arr, it);
+  }
+  return res ? { p: res.poster_path || null, r: res.vote_average || null, v: res.vote_count || 0, o: res.overview || '', id: res.id, at: Date.now() } : { none: true, at: Date.now() };
+}
+const queue = []; let active = 0; const pending = new Set(); let tmdbBroken = false;
+function enqueue(ck, it) { if (!tmdbKey() || tmdbBroken || tmdbCache[ck] || pending.has(ck)) return; pending.add(ck); queue.push([ck, it]); pump(); }
+function pump() {
+  while (active < 4 && queue.length) {
+    const [ck, it] = queue.shift(); active++;
+    tmdbLookup(it).then(data => { tmdbCache[ck] = data; saveCacheSoon(); updateCards(ck); renderCounts(); })
+      .catch(e => { if (e.status === 401) { tmdbBroken = true; toast('TMDB rejected the key: check it in Settings'); } })
+      .finally(() => { active--; pending.delete(ck); pump(); });
+  }
+}
+function updateCards(ck) {
+  const tm = tmdbCache[ck]; if (!tm || tm.none) return;
+  $$('[data-ck]').filter(c => c.dataset.ck === ck).forEach(card => {
+    const poster = $('.poster', card);
+    if (tm.p && !$('img', poster)) { const img = new Image(); img.alt = ''; img.onload = () => img.classList.add('ok'); img.onerror = () => img.remove(); img.src = 'https://image.tmdb.org/t/p/w342' + tm.p; poster.appendChild(img); }
+    if (tm.r && tm.v > 5 && !$('.pill.r', poster)) poster.insertAdjacentHTML('beforeend', `<span class="pill r">★ ${(+tm.r).toFixed(1)}</span>`);
+    if (tm.o && !$('.overview', card)) { const rs = $('.reason', card); if (rs) rs.insertAdjacentHTML('afterend', `<p class="overview">${esc(tm.o)}</p>`); }
+  });
+}
+let io = null;
+function itemFor(id) { const r = recMap.get(id); return r ? r.item : state.toWatch.find(t => t.id === id); }
+function observe() {
+  if (!tmdbKey()) return;
+  const cards = $$('[data-ck]');
+  if (!('IntersectionObserver' in window)) { cards.slice(0, 24).forEach(c => { const it = itemFor(c.dataset.id); if (it) enqueue(c.dataset.ck, it); }); return; }
+  if (!io) io = new IntersectionObserver(ents => ents.forEach(en => { if (en.isIntersecting) { io.unobserve(en.target); const it = itemFor(en.target.dataset.id); if (it) enqueue(en.target.dataset.ck, it); } }), { rootMargin: '300px' });
+  cards.forEach(c => { if (!tmdbCache[c.dataset.ck]) io.observe(c); });
+}
+
+// ---------- settings ----------
+function renderSettings() {
+  $('#tmdb-key').value = state.settings.tmdbKey || '';
+  const films = C.CATALOGUE.filter(c => c.type === 'movie').length;
+  $('#about').innerHTML = `A hand-picked catalogue of <b>${C.CATALOGUE.length}</b> titles (${films} films, ${C.CATALOGUE.length - films} series), each linked to things you've watched. A pick scores points for every link to something in your seen list (your own library counts more than the built-in taste profile, and anything you marked Watched in the last 45 days gets a big boost), plus genre affinity. Title matching ignores case, punctuation, accents, a leading “The”, year suffixes and “&” vs “and”, and uses IMDb ids when both sides have one.`;
+}
+$('#tmdb-save').onclick = async () => {
+  const k = $('#tmdb-key').value.trim(); const el = $('#tmdb-msg');
+  state.settings.tmdbKey = k; saveState(); tmdbBroken = false;
+  if (!k) { setMsg(el, 'Key cleared.', 'ok'); return; }
+  setMsg(el, 'Testing…');
+  try { await tmdbFetch('/configuration'); setMsg(el, `Key works (${isV4(k) ? 'v4 read access token' : 'v3 API key'}). Posters load as you browse.`, 'ok'); }
+  catch (e) { setMsg(el, e.status === 401 ? 'TMDB rejected that key (401). Copy either the v3 API key or the v4 read access token.' : "Couldn't reach TMDB (" + e.message + '). The key is saved; posters load when you are online.', 'err'); }
+};
+$('#tmdb-clear-key').onclick = () => { state.settings.tmdbKey = ''; saveState(); $('#tmdb-key').value = ''; setMsg($('#tmdb-msg'), 'Key removed: typographic cards it is.', 'ok'); };
+$('#tmdb-clear-cache').onclick = () => { tmdbCache = {}; LS.del(K_TMDB); renderCounts(); setMsg($('#tmdb-msg'), 'Cache cleared.', 'ok'); };
+
+function download(name, data, type) {
+  const blob = data instanceof Blob ? data : new Blob([data], { type: type || 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+const stamp = () => new Date().toISOString().slice(0, 10);
+$('#btn-export').onclick = () => { download(`picture-house-${stamp()}.json`, JSON.stringify(C.exportData(state, $('#exp-cache').checked ? tmdbCache : null), null, 1)); setMsg($('#backup-msg'), 'Exported (TMDB key and Stremio auth key left out).', 'ok'); };
+$('#imp-file').onchange = e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  f.text().then(t => {
+    const d = JSON.parse(t); const st = C.importData(d, { tmdbKey: state.settings.tmdbKey });
+    if (!confirm(`Replace current data with this backup? (${st.seen.length} seen, ${st.toWatch.length} to watch, ${st.notInterested.length} not interested)`)) return;
+    state = st;
+    if (d.tmdbCache && typeof d.tmdbCache === 'object') { tmdbCache = Object.assign(tmdbCache, d.tmdbCache); saveCacheSoon(); }
+    saveState(); render(); setMsg($('#backup-msg'), 'Backup imported.', 'ok');
+  }).catch(err => setMsg($('#backup-msg'), 'Import failed: ' + err.message, 'err'));
+};
+$('#btn-reset').onclick = () => {
+  if (!confirm('Reset everything? This deletes your imported library, To Watch queue, not-interested list, TMDB key and cache from this browser.')) return;
+  [K_STATE, K_TMDB, K_AUTH].forEach(k => LS.del(k)); tmdbCache = {}; state = C.initialState(); saveState();
+  ui.tags = []; ui.q = ''; $('#q').value = ''; show('towatch'); toast('Reset: 20 starter picks loaded');
+};
+
+// ---------- zip (stored, no compression) for the add-on export ----------
+const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(b) { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC[(c ^ b[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+function makeZip(files) {
+  const enc = new TextEncoder(); const parts = [], central = []; let offset = 0;
+  const d = new Date(); const time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1); const date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  for (const [name, content] of Object.entries(files)) {
+    const nb = enc.encode(name), data = enc.encode(content), crc = crc32(data);
+    const h = new DataView(new ArrayBuffer(30));
+    h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x0800, true); h.setUint16(10, time, true); h.setUint16(12, date, true);
+    h.setUint32(14, crc, true); h.setUint32(18, data.length, true); h.setUint32(22, data.length, true); h.setUint16(26, nb.length, true);
+    parts.push(new Uint8Array(h.buffer), nb, data);
+    const c = new DataView(new ArrayBuffer(46));
+    c.setUint32(0, 0x02014b50, true); c.setUint16(4, 20, true); c.setUint16(6, 20, true); c.setUint16(8, 0x0800, true); c.setUint16(12, time, true); c.setUint16(14, date, true);
+    c.setUint32(16, crc, true); c.setUint32(20, data.length, true); c.setUint32(24, data.length, true); c.setUint16(28, nb.length, true); c.setUint32(42, offset, true);
+    central.push(new Uint8Array(c.buffer), nb);
+    offset += 30 + nb.length + data.length;
+  }
+  const csize = central.reduce((a, b) => a + b.length, 0), count = Object.keys(files).length;
+  const e = new DataView(new ArrayBuffer(22));
+  e.setUint32(0, 0x06054b50, true); e.setUint16(8, count, true); e.setUint16(10, count, true); e.setUint32(12, csize, true); e.setUint32(16, offset, true);
+  return new Blob(parts.concat(central, [new Uint8Array(e.buffer)]), { type: 'application/zip' });
+}
+$('#btn-addon').onclick = () => {
+  const limit = parseInt($('#addon-limit').value, 10) || 100;
+  const now = new Date(); const version = `1.${now.getFullYear() % 100}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}.${now.getHours() * 60 + now.getMinutes()}`;
+  const { files, counts } = C.buildAddon(state, { limit, version });
+  const out = {}; for (const [p, obj] of Object.entries(files)) out['addon/' + p] = JSON.stringify(obj, null, p === 'manifest.json' ? 2 : 0);
+  download(`nicks-picks-addon-${stamp()}.zip`, makeZip(out));
+  const C2 = C.ADDON_CATALOGS;
+  setMsg($('#addon-msg'), `Built ${Object.keys(files).length} files: ${counts[C2.movie.main]} films and ${counts[C2.series.main]} series (To Watch: ${counts[C2.movie.towatch]} films, ${counts[C2.series.towatch]} series). Only titles with a verified IMDb id are included.`, 'ok');
+};
+$('#btn-addon-data').onclick = () => { download(`picture-house-${stamp()}.json`, JSON.stringify(C.exportData(state, null), null, 1)); setMsg($('#addon-msg'), `Saved. Then run: node build-addon.js picture-house-${stamp()}.json`, 'ok'); };
+
+// ---------- boot ----------
+const start = (location.hash || '').slice(1);
+show(start && $('#view-' + start) ? start : 'discover');
+})();
+</script>
+</body>
+</html>

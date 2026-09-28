@@ -1,0 +1,13 @@
+# Personal watch history / credentials: never commit
+library.json
+library.txt
+*.local.json
+picture-house-*.json
+*.private.*
+# local tooling
+node_modules/
+package.json
+package-lock.json
+npm.log
+src/ids-*.txt
+screenshot*.png
