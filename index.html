@@ -124,6 +124,18 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--bg2);padding:1px 
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
 #toast button{margin-left:10px}
 footer{color:var(--dim);font-size:12px;text-align:center;padding:30px 20px 40px;border-top:1px solid var(--line)}
+.poster[data-act]{cursor:pointer}
+.poster[data-act]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn.watch{border-color:var(--accent);color:var(--accent2)}
+.btn.watch:hover{background:var(--accent);color:var(--accent-ink)}
+#watch{position:fixed;inset:0;z-index:40;background:#070605;display:flex;flex-direction:column}
+.watchbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--line);background:rgba(14,13,12,.96)}
+.watch-title{flex:1;min-width:160px}
+.watch-title strong{display:block;font:600 17px/1.2 var(--serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.watch-title span{display:block;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#watch-frame{flex:1;width:100%;border:0;background:#000}
+.watch-fallback{flex:1;display:grid;place-items:center;padding:32px;text-align:center;color:var(--muted)}
+.watch-fallback p{max-width:42ch;margin:0}
 @media (max-width:860px){.cols{grid-template-columns:1fr}.hero{grid-template-columns:140px 1fr;gap:16px;padding:16px}}
 @media (max-width:640px){
   .wrap{padding:0 14px}
@@ -271,6 +283,17 @@ footer{color:var(--dim);font-size:12px;text-align:center;padding:30px 20px 40px;
 </main>
 <footer>Picture House · built for Nick Moody · works offline · posters via TMDB when enabled (this product uses the TMDB API but is not endorsed or certified by TMDB)</footer>
 <div id="toast" role="status" aria-live="polite"></div>
+<div id="watch" hidden>
+  <div class="watchbar">
+    <button class="btn" type="button" id="watch-close">Close</button>
+    <div class="watch-title"><strong id="watch-name"></strong><span id="watch-sub"></span></div>
+    <a class="btn" id="watch-app" href="stremio:///">Stremio app</a>
+    <a class="btn" id="watch-tab" href="https://web.stremio.com/" target="_blank" rel="noopener">Open in tab</a>
+    <button class="btn" type="button" id="watch-seen">✓ Watched</button>
+  </div>
+  <iframe id="watch-frame" title="Stremio" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen hidden></iframe>
+  <div class="watch-fallback" id="watch-fallback" hidden><p id="watch-fallback-text"></p></div>
+</div>
 
 <script id="app-core">
 /* ====================================================================
@@ -1383,8 +1406,9 @@ function posterHTML(it, idx) {
 function cardHTML(it, reason, actions, idx, badge) {
   const tm = tmdbCache[cacheKey(it)];
   const typeLabel = it.type === 'series' ? 'Series' : it.type === 'movie' ? 'Film' : '';
+  const posterAct = pageImdb(it.imdb) ? ` data-act="watch" role="button" tabindex="0" aria-label="Watch ${esc(it.title)}"` : '';
   return `<article class="card" data-id="${esc(it.id)}" data-ck="${esc(cacheKey(it))}">
-    <div class="poster${badge ? ' b' : ''}">${posterHTML(it, idx)}${badge || ''}</div>
+    <div class="poster${badge ? ' b' : ''}"${posterAct}>${posterHTML(it, idx)}${badge || ''}</div>
     <div class="meta"><h3>${esc(it.title)}</h3>
       <div class="sub">${esc([it.year, typeLabel].filter(Boolean).join(' · '))}</div>
       <p class="reason">${reasonHTML(reason)}</p>
@@ -1393,7 +1417,12 @@ function cardHTML(it, reason, actions, idx, badge) {
       <div class="actions">${actions}</div></div></article>`;
 }
 const ACT_REC = `<button class="btn primary" data-act="add">+ To Watch</button><button class="btn" data-act="seenit" title="I've already seen this">Seen it</button><button class="btn ghost danger" data-act="ni" title="Never suggest this again">Not interested</button>`;
-const ACT_TW = `<button class="btn primary" data-act="watched">✓ Watched</button><button class="btn ghost danger" data-act="ni" title="Never suggest this again">Not interested</button><button class="btn ghost" data-act="remove">Remove</button>`;
+const ACT_TW = `<button class="btn" data-act="watched">✓ Watched</button><button class="btn ghost danger" data-act="ni" title="Never suggest this again">Not interested</button><button class="btn ghost" data-act="remove">Remove</button>`;
+function pageImdb(id) { return typeof id === 'string' && /^tt\d{5,10}$/.test(id) ? id : null; }
+function watchButton(it, primary) {
+  if (!pageImdb(it.imdb)) return `<button class="btn" disabled title="No IMDb id, so Stremio cannot open this">Watch</button>`;
+  return `<button class="btn watch${primary ? ' primary' : ''}" data-act="watch" title="Open in the Stremio wrapper">▶ Watch</button>`;
+}
 
 let recMap = new Map();
 function lcg(seed) { let s = seed % 2147483647; if (s <= 0) s += 2147483646; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
@@ -1406,15 +1435,16 @@ function renderDiscover() {
   const sp = ui.surprise && recMap.get(ui.surprise);
   if (sp) {
     const it = sp.item, tm = tmdbCache[cacheKey(it)];
-    $('#surprise').innerHTML = `<div class="hero" data-id="${esc(it.id)}" data-ck="${esc(cacheKey(it))}"><div class="poster">${posterHTML(it, 0)}</div>
+    const heroPoster = pageImdb(it.imdb) ? ` data-act="watch" role="button" tabindex="0" aria-label="Watch ${esc(it.title)}"` : '';
+    $('#surprise').innerHTML = `<div class="hero" data-id="${esc(it.id)}" data-ck="${esc(cacheKey(it))}"><div class="poster"${heroPoster}>${posterHTML(it, 0)}</div>
       <div class="body"><div class="kicker">✦ Surprise pick</div><h3>${esc(it.title)}</h3><div class="sub">${esc(it.year)} · ${it.type === 'series' ? 'Series' : 'Film'} · match ${sp.score.toFixed(1)}</div>
       <p class="reason">${reasonHTML(sp.reason)}</p>${tm && tm.o ? `<p class="overview">${esc(tm.o)}</p>` : ''}
       <div class="tags">${esc(it.tags.map(t => C.TAG_LABELS[t] || t).join(' · '))}</div>
-      <div class="actions">${ACT_REC}<button class="btn ghost" data-act="again">↻ Another</button></div></div>
+      <div class="actions">${watchButton(it, false)}${ACT_REC}<button class="btn ghost" data-act="again">↻ Another</button></div></div>
       <button class="btn ghost sm x" data-act="close" title="Close">✕</button></div>`;
   } else $('#surprise').innerHTML = '';
   const shown = list.slice(0, ui.page * PAGE);
-  $('#grid-discover').innerHTML = shown.length ? shown.map((r, i) => cardHTML(r.item, r.reason, ACT_REC, i, r.recent ? '<span class="pill">New for you</span>' : '')).join('')
+  $('#grid-discover').innerHTML = shown.length ? shown.map((r, i) => cardHTML(r.item, r.reason, watchButton(r.item, false) + ACT_REC, i, r.recent ? '<span class="pill">New for you</span>' : '')).join('')
     : `<div class="empty" style="grid-column:1/-1">No suggestions match. Try clearing the filters${state.seen.length ? '' : ', or import your library first'}.</div>`;
   $('#btn-more').hidden = list.length <= shown.length;
   $('#btn-more').textContent = `Show more (${list.length - shown.length})`;
@@ -1424,7 +1454,7 @@ function renderToWatch() {
   const base = C.filterList(state.toWatch, { type: ui.type, q: ui.q }, t => t, t => t.reason);
   renderChips(base);
   const list = C.filterList(base, { tags: ui.tags }, t => t, t => t.reason);
-  $('#grid-towatch').innerHTML = list.length ? list.map((t, i) => cardHTML(t, t.reason, ACT_TW, i, t.seed ? '<span class="pill">Starter pick</span>' : '')).join('')
+  $('#grid-towatch').innerHTML = list.length ? list.map((t, i) => cardHTML(t, t.reason, watchButton(t, true) + ACT_TW, i, t.seed ? '<span class="pill">Starter pick</span>' : '')).join('')
     : `<div class="empty" style="grid-column:1/-1">${state.toWatch.length ? 'Nothing matches these filters.' : 'Your queue is empty: add picks from Discover.'}</div>`;
   observe();
 }
@@ -1449,6 +1479,7 @@ function renderSeen() {
   const lim = ui.seenAll || q ? rows.length : 100;
   $('#seen-list').innerHTML = rows.slice(0, lim).map(x => `<div class="li"><span class="t">${esc(x.r.title)}${x.r.year ? `<small>${esc(x.r.year)}</small>` : ''}${x.r.type ? `<small>${x.r.type === 'series' ? 'series' : x.r.type === 'movie' ? 'film' : esc(x.r.type)}</small>` : ''}</span>
       <span class="badge ${x.r.source === 'watched' ? 'w' : ''}">${esc(x.user ? x.r.source : x.r.note)}</span>
+      ${pageImdb(x.r.imdb) ? `<button class="btn sm watch" data-open-watch="1" data-title="${esc(x.r.title)}" data-year="${esc(x.r.year || '')}" data-type="${esc(x.r.type || '')}" data-imdb="${esc(x.r.imdb)}">▶ Watch</button>` : ''}
       ${x.user ? `<button class="btn sm ghost danger" data-seen="${state.seen.indexOf(x.r)}">Remove</button>` : '<span class="badge" title="Always treated as seen">locked</span>'}</div>`).join('')
     || '<div class="li"><span class="t" style="color:var(--muted)">No matches</span></div>';
   $('#seen-more').hidden = rows.length <= lim;
@@ -1480,6 +1511,11 @@ function render() {
 
 // ---------- card actions ----------
 document.addEventListener('click', e => {
+  const opener = e.target.closest('[data-open-watch]');
+  if (opener) {
+    openWatch({ title: opener.dataset.title, year: opener.dataset.year || null, type: opener.dataset.type || null, imdb: opener.dataset.imdb || null }, '');
+    return;
+  }
   const b = e.target.closest('[data-act]'); if (!b) return;
   const card = b.closest('[data-id]'); const id = card && card.dataset.id; const act = b.dataset.act;
   if (act === 'close') { ui.surprise = null; renderDiscover(); return; }
@@ -1487,6 +1523,7 @@ document.addEventListener('click', e => {
   const rec = ui.view === 'discover' ? recMap.get(id) : null;
   const tw = state.toWatch.find(t => t.id === id);
   const item = rec ? rec.item : tw; if (!item) return;
+  if (act === 'watch') { openWatch(item, (rec && rec.reason) || (tw && tw.reason) || ''); return; }
   const snapshot = JSON.stringify(state);
   const undo = { label: 'Undo', fn: () => { state = Object.assign(C.blankState(), JSON.parse(snapshot)); saveState(); render(); } };
   if (act === 'add') { C.addToWatch(state, item, rec ? rec.reason : ''); toast(`Added “${item.title}” to To Watch`, undo); }
@@ -1495,6 +1532,64 @@ document.addEventListener('click', e => {
   else if (act === 'remove') { C.removeToWatch(state, id); toast(`Removed “${item.title}” from To Watch`, undo); }
   if (ui.surprise === id) ui.surprise = null;
   saveState(); render();
+});
+
+// ---------- Stremio watch wrapper ----------
+let watchItem = null;
+function watchType(item) {
+  if (item.type === 'movie' || item.type === 'series') return item.type;
+  const cat = item.title && C.findCatalogue(item.title);
+  return cat && (cat.type === 'movie' || cat.type === 'series') ? cat.type : null;
+}
+function stremioTarget(item) {
+  const id = pageImdb(item && item.imdb);
+  const type = item && watchType(item);
+  if (!id || !type) return null;
+  const path = '/detail/' + type + '/' + id + (type === 'movie' ? '/' + id : '');
+  return { web: 'https://web.stremio.com/#' + path, app: 'stremio://' + path };
+}
+function openWatch(item, reason) {
+  watchItem = item;
+  const links = stremioTarget(item);
+  $('#watch-name').textContent = item.title || 'Untitled';
+  const kind = item.type === 'series' ? 'Series' : item.type === 'movie' ? 'Film' : '';
+  $('#watch-sub').textContent = [item.year, kind, reason].filter(Boolean).join(' · ');
+  const frame = $('#watch-frame'), fallback = $('#watch-fallback'), app = $('#watch-app'), tab = $('#watch-tab');
+  if (!links) {
+    frame.hidden = true; frame.src = 'about:blank'; fallback.hidden = false;
+    app.hidden = tab.hidden = true;
+    $('#watch-fallback-text').textContent = pageImdb(item.imdb)
+      ? 'Stremio needs this to be a film or a series before it can open.'
+      : 'This title has no IMDb id, so Stremio cannot open it.';
+  } else {
+    fallback.hidden = true; frame.hidden = false; frame.src = links.web;
+    app.hidden = tab.hidden = false; app.href = links.app; tab.href = links.web;
+  }
+  $('#watch').hidden = false;
+  document.body.style.overflow = 'hidden';
+  $('#watch-close').focus();
+}
+function closeWatch() {
+  $('#watch').hidden = true;
+  $('#watch-frame').src = 'about:blank';
+  document.body.style.overflow = '';
+  watchItem = null;
+}
+$('#watch-close').onclick = closeWatch;
+$('#watch-seen').onclick = () => {
+  if (!watchItem) return;
+  const title = watchItem.title;
+  const snapshot = JSON.stringify(state);
+  C.markWatched(state, watchItem);
+  saveState(); render();
+  toast(`Marked “${title}” as watched`, { label: 'Undo', fn: () => { state = Object.assign(C.blankState(), JSON.parse(snapshot)); saveState(); render(); } });
+};
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !$('#watch').hidden) { e.preventDefault(); closeWatch(); return; }
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('.poster[data-act="watch"]')) {
+    e.preventDefault();
+    e.target.closest('.poster').click();
+  }
 });
 
 // ---------- import ----------
