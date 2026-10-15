@@ -21,6 +21,13 @@ const override = {
   "Bones":"Has Halloween episodes. Procedural fun.",
   "Hemlock Grove":"Dark gothic series. Scary and gory.",
 };
+// Hand-verified ids added at Nick's request: [id, name, year, description]
+const manualMovies = [
+  ['tt0103874','Bram Stoker\'s Dracula',1992,'Lavish, gothic and romantic vampire horror. Scary-lite and campy in places. Date night yes.'],
+  ['tt0110148','Interview with the Vampire',1994,'Gothic, lush and brooding vampire drama. Moody, not too gory. Date night yes.'],
+  ['tt0114369','Se7en',1995,'Very dark, rainy city serial killer thriller. Grim and intense, not cozy. Date night only if you both like dark thrillers.'],
+  ['tt0128801','Under Wraps',1997,'Disney Halloween TV movie about kids and a living mummy. Campy, cozy and silly. Date night yes for nostalgia.'],
+];
 const bad = d => /^(dup|placeholder)$/.test(d) || /Hocus Pocus-/.test(d) ;
 const typeOk = { movie:['movie','tvMovie','video'], series:['tvSeries','tvMiniSeries'] };
 async function resolve(title, year, kind) {
@@ -52,6 +59,7 @@ async function build(list, kind, prefix) {
 }
 (async () => {
   const s = await build(series,'series'), m = await build(movies,'movie');
+  for (const [id,name,y,d] of manualMovies) if (!m.metas.some(x=>x.id===id)) m.metas.push({ id, type:'movie', name, poster:`https://images.metahub.space/poster/medium/${id}/img`, posterShape:'poster', description:d, genres:['Halloween'], releaseInfo:String(y) });
   const w = (rel,metas)=>{const p=path.join(root,rel);fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,JSON.stringify({metas})+'\n');};
   w('addon/catalog/series/halloween-specials-tv.json', s.metas);
   w('addon/catalog/movie/halloween-movies.json', m.metas);
